@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Control - Proyecto OPM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, 
+                #003F78 0%,
+                #575756 35%,
+                #EC6608 70%,
+                #003F78 100%
+            );
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 63, 120, 0.3) 0%,
+                rgba(87, 87, 86, 0.4) 50%,
+                rgba(236, 102, 8, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        .nav-header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #EC6608, #f59e0b, #EC6608);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            color: #e8eaed;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .pillar-section {
+            margin-bottom: 50px;
+        }
+        
+        .pillar-title {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(5px);
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            line-height: 1.5;
+            border-left: 5px solid #EC6608;
+            animation: fadeInDown 0.6s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .pillar-title i {
+            font-size: 2rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background-color: #FBEBDD;
+            border-radius: 20px;
+            padding: 25px;
+            color: #6B4F4F;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: #3D2C2C;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: #3D2C2C;
+        }
+
+        .project-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-top: auto;
+        }
+
+        .project-details li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .project-details li:last-child { margin-bottom: 0; }
+        .project-details .detail-icon {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            color: #EC6608;
+            width: 20px;
+            text-align: center;
+            padding-top: 3px;
+        }
+        .detail-text strong { color: #3D2C2C; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2rem; }
+            .pillar-title { font-size: 1.3rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+        }
+        .back-button {
+    background: linear-gradient(135deg, #EC6608, #d97706);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
+}
+    </style>
+</head>
+<script>
+function goBack() {
+    console.log('🔙 Regresando al tablero principal...');
+    
+    // Mostrar mensaje de transición
+    const transitionMessage = document.createElement('div');
+    transitionMessage.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #003F78, #EC6608);
+        color: white;
+        padding: 25px 40px;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        z-index: 10000;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    `;
+    transitionMessage.innerHTML = `
+        <div style="font-size: 2rem; margin-bottom: 10px;">🏠</div>
+        <div>Regresando al Tablero Principal...</div>
+    `;
+    
+    document.body.appendChild(transitionMessage);
+    
+    // Navegar después de un breve delay
+    setTimeout(() => {
+        try {
+            window.location.href = 'index.html';
+        } catch (error) {
+            console.error('Error al navegar:', error);
+            if (transitionMessage.parentNode) {
+                transitionMessage.parentNode.removeChild(transitionMessage);
+            }
+            alert('❌ Error al regresar al tablero principal.\n\nVerifique que el archivo index.html existe en la misma carpeta.');
+        }
+    }, 1200);
+}
+</script>
+<body>
+<nav class="nav-header">
+    <button class="back-button" onclick="goBack()">
+        ← Volver al Tablero Principal
+    </button>
+    <div class="nav-title">Proyectos de Interés</div>
+    <div style="width: 180px;"></div>
+</nav>
+
+    <div class="main-container">
+        <div class="hero-section">
+            <h1 class="hero-title">Proyectos de Interes para la VPRE-2025</h1>
+            <p class="hero-subtitle"> Marco OPM (Organizational Project Management) Entregables clave 2024-2026</p>
+        </div>
+
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-cogs"></i>Pilar 1: Procesos</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-sitemap"></i></div>
+                    <h3 class="project-title">Diseño e Implementación de la PMO/VMO</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Objetivo:</strong> Habilitar una capacidad institucional para centralizar y estandarizar la gestión de proyectos, programas y portafolio.</span></li>
+                        <li><i class="detail-icon fa-solid fa-box"></i><span class="detail-text"><strong>Entregables:</strong> Diseño Conceptual (2024), Constitución (2025), PMO Operativa y Madura (2026).</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-book-atlas"></i></div>
+                    <h3 class="project-title">Desarrollo de Guías y Manuales</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Objetivo:</strong> Crear un marco metodológico formal para la gestión de proyectos en la ANI y para sus consultores/concesionarios.</span></li>
+                        <li><i class="detail-icon fa-solid fa-box"></i><span class="detail-text"><strong>Entregables:</strong> Guía de Gestión Integral ANI, Manual de GP para Consultoría, Manual de GP para Concesión.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-users"></i>Pilar 2: Personas</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <h3 class="project-title">Programa de Formación y Capacitación</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Objetivo:</strong> Fortalecer las habilidades y competencias en gestión de proyectos del personal de la ANI.</span></li>
+                        <li><i class="detail-icon fa-solid fa-box"></i><span class="detail-text"><strong>Entregables:</strong> 3 Cursos (Intro a GP, Guía ANI, Gestión del Cambio) y 8 Talleres (Riesgos, Lecciones Aprendidas, etc.).</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-retweet"></i></div>
+                    <h3 class="project-title">Estrategia de Gestión del Cambio (GCO)</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Objetivo:</strong> Acompañar a la organización en la adopción del nuevo modelo, venciendo la resistencia al cambio y la cultura de silos.</span></li>
+                        <li><i class="detail-icon fa-solid fa-box"></i><span class="detail-text"><strong>Entregables:</strong> Plan de Gestión del Cambio, formación de Gestores del Cambio ANI, y métricas de seguimiento.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-laptop-code"></i>Pilar 3: Tecnología</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3 class="project-title">Fortalecimiento y Evolución de ANISCOPIO</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Objetivo:</strong> Mejorar la herramienta actual para la gestión de información de proyectos.</span></li>
+                        <li><i class="detail-icon fa-solid fa-box"></i><span class="detail-text"><strong>Entregables:</strong> Levantamiento de requisitos para GPI, Plan de implementación tecnológica.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3 class="project-title">Implementación de Dashboard Power BI</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Objetivo:</strong> Crear un sistema de reportería que informe el estado del cronograma, riesgos y KPIs de los proyectos.</span></li>
+                        <li><i class="detail-icon fa-solid fa-box"></i><span class="detail-text"><strong>Entregables:</strong> Documento de diseño de la solución, Requerimientos funcionales definidos, Dashboard implementado.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pillar-section">
+             <h2 class="pillar-title"><i class="fa-solid fa-sack-dollar"></i>Presupuesto</h2>
+             <div class="projects-grid">
+                 <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h3 class="project-title">Presupuesto Asignado 2025</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Objetivo:</strong> Financiar los recursos humanos y tecnológicos necesarios para la Fase 2 y 3 del proyecto OPM.</span></li>
+                        <li><i class="detail-icon fa-solid fa-box"></i><span class="detail-text"><strong>Desglose:</strong> Recursos Humanos ($875.000.000), Recursos Tecnológicos ($110.000.000).</span></li>
+                        <li><i class="detail-icon fa-solid fa-circle-check"></i><span class="detail-text"><strong>Total Aprobado 2025:</strong> $985.000.000.</span></li>
+                        <li><i class="detail-icon fa-solid fa-circle-check"></i><span class="detail-text"><strong>Proyecto BPIN:</strong> 202400000000134.</span></li>
+
+                    </ul>
+                </div>
+             </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

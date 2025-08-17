@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Control - Temas Críticos ANI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #EC6608 0%, #575756 100%); min-height: 100vh; padding: 20px; }
+        .header { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; text-align: center; position: relative; }
+        .header h1 { color: #003F7B; font-size: 2.5em; margin-bottom: 10px; font-weight: 700; }
+        .header p { color: #7f8c8d; font-size: 1.2em; }
+        
+        .main-dashboard-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #EC6608;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(236, 102, 8, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .main-dashboard-button:hover {
+            background: #d4570a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
+        }
+        
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-number { font-size: 3em; font-weight: bold; color: #EC6608; margin-bottom: 10px; }
+        .stat-label { color: #575756; font-size: 1.1em; }
+        
+        .filters-container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: end; }
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-group label { font-weight: 600; color: #003F7B; margin-bottom: 8px; }
+        .filter-group select, .filter-group input { padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 14px; transition: border-color 0.3s ease; }
+        .filter-group select:focus, .filter-group input:focus { outline: none; border-color: #EC6608; }
+        .clear-filters { background: #EC6608; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.3s ease; height: 45px; }
+        .clear-filters:hover { background: #d4570a; }
+
+        /* NUEVOS ESTILOS PARA TARJETAS MODERNAS */
+        .modern-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .modern-project-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            border-left: 4px solid #EC6608;
+        }
+
+        .modern-project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .modern-card-header {
+            padding: 20px 20px 15px 20px;
+            border-bottom: 1px solid #f1f2f6;
+        }
+
+        .modern-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .modern-card-subtitle {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 12px;
+        }
+
+        .modern-badges-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .modern-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-carretero { background: #e3f2fd; color: #1976d2; }
+        .badge-ferreo { background: #f3e5f5; color: #7b1fa2; }
+        .badge-aereo { background: #e8f5e8; color: #388e3c; }
+        .badge-4g { background: #fff3e0; color: #f57c00; }
+        .badge-3g { background: #fce4ec; color: #c2185b; }
+        .badge-git { background: #f1f8e9; color: #689f38; }
+
+        .impact-badge-alto { background: #ffebee; color: #d32f2f; }
+        .impact-badge-medio { background: #fff8e1; color: #f57c00; }
+        .impact-badge-bajo { background: #e8f5e8; color: #388e3c; }
+
+        .modern-card-body {
+            padding: 15px 20px 20px 20px;
+        }
+
+        .situation-text {
+            font-size: 13px;
+            color: #34495e;
+            line-height: 1.4;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .modern-card-footer {
+            padding: 0 20px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-details-btn {
+            background: #EC6608;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .view-details-btn:hover {
+            background: #d4570a;
+        }
+
+        /* ESTILOS PARA VISTA DE DETALLE */
+        .project-title-header { background: linear-gradient(135deg, #003F7B 0%, #EC6608 100%); color: white; padding: 25px 30px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); position: relative; }
+        .project-title-text { font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; line-height: 1.3; padding-right: 150px; }
+        .project-meta-badges { display: flex; gap: 12px; flex-wrap: wrap; }
+        .meta-badge { background: rgba(255, 255, 255, 0.2); padding: 8px 16px; border-radius: 25px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .situacion-critica-header { background: linear-gradient(135deg, #d63031 0%, #e74c3c 100%); color: white; padding: 20px 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 8px 25px rgba(214, 48, 49, 0.2); display: flex; align-items: center; gap: 15px; }
+        .situacion-critica-icon { font-size: 2rem; }
+        .situacion-critica-content h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .situacion-critica-text { font-size: 1rem; opacity: 0.95; line-height: 1.4; }
+        .git-cards-wrapper { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 30px; margin-bottom: 30px; border: 2px solid #f1f2f6; }
+        .git-cards-title { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #f1f2f6; }
+        .git-cards-title h2 { color: #003F7B; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+        .git-cards-title p { color: #7f8c8d; font-size: 1rem; }
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 0; }
+        .topic-card { background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 2px solid #f8f9fa; }
+        .topic-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); border-color: #e9ecef; }
+        .card-header { padding: 20px; color: white; position: relative; font-weight: 600; font-size: 1.1rem; min-height: 80px; display: flex; align-items: center; justify-content: space-between; }
+        .card-header.git-social { background: linear-gradient(135deg, #003F7B, #2c5aa0); }
+        .card-header.git-ambiental { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .card-header.git-predial { background: linear-gradient(135deg, #EC6608, #f39c12); }
+        .card-header.git-juridico { background: linear-gradient(135deg, #575756, #7f8c8d); }
+        .card-header.git-riesgos { background: linear-gradient(135deg, #d63031, #e74c3c); }
+        .impact-badge-card { position: absolute; top: 15px; right: 15px; padding: 6px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 700; text-transform: uppercase; border: 2px solid rgba(255,255,255,0.3); }
+        .impact-alto { background: rgba(255, 255, 255, 0.95); color: #d63031; border-color: rgba(255,255,255,0.8); }
+        .impact-medio { background: rgba(255, 255, 255, 0.95); color: #EC6608; border-color: rgba(255,255,255,0.8); }
+        .impact-bajo { background: rgba(255, 255, 255, 0.95); color: #27ae60; border-color: rgba(255,255,255,0.8); }
+        .card-content { padding: 20px; }
+        .impact-description { color: #34495e; line-height: 1.6; font-size: 0.95rem; }
+        .proximos-pasos-card { background: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; margin-top: 30px; width: 100%; }
+        .proximos-pasos-header { background: linear-gradient(135deg, #636e72, #74b9ff); color: white; padding: 20px 30px; font-weight: 600; font-size: 1.1rem; }
+        .proximos-pasos-content { padding: 25px 30px; background: #f8f9fa; border-left: 4px solid #636e72; }
+
+        .back-button { 
+            position: absolute; 
+            top: 25px; 
+            right: 25px; 
+            background: rgba(0, 0, 0, 0.8); 
+            color: white; 
+            border: 2px solid rgba(255, 255, 255, 0.9); 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 14px;
+            transition: all 0.3s ease; 
+            z-index: 10; 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .back-button:hover { 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .no-results { text-align: center; padding: 60px 20px; color: #575756; font-size: 1.2em; background: white; border-radius: 15px; margin-top: 20px; }
+        
+        @media (max-width: 768px) {
+            .main-dashboard-button {
+                position: static;
+                margin: 0 auto 20px auto;
+                width: auto;
+            }
+            .modern-cards-container {
+                grid-template-columns: 1fr;
+            }
+            .project-title-text {
+                padding-right: 0;
+                padding-bottom: 15px;
+            }
+            .back-button {
+                position: static;
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="main-dashboard-button" onclick="volverATableroPrincipal()">← Volver al Tablero Principal</button>
+        <h1>TABLERO DE TEMAS CRÍTICOS</h1>
+        <p>Vicepresidencia de Planeacion, Riegos y Entorno - Agencia Nacional de Infraestructura (ANI)</p>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-card"><div class="stat-number" id="stat-proyectos">0</div><div class="stat-label">Temas Críticos (Proyectos)</div></div>
+        <div class="stat-card"><div class="stat-number" id="stat-gits">0</div><div class="stat-label">Temas de Gestión (GIT)</div></div>
+        <div class="stat-card"><div class="stat-number" id="stat-categorias">0</div><div class="stat-label">Categorías</div></div>
+        <div class="stat-card"><div class="stat-number" id="stat-mostrados">0</div><div class="stat-label">Temas Mostrados</div></div>
+    </div>
+
+    <div class="filters-container">
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label for="category-selector">Seleccionar Categoría:</label>
+                <select id="category-selector"></select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-situacion">Situación Crítica:</label>
+                <select id="filter-situacion">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-impacto">Nivel de Impacto:</label>
+                <select id="filter-impacto">
+                    <option value="">Todos</option><option value="ALTO">ALTO</option><option value="MEDIO">MEDIO</option><option value="BAJO">BAJO</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <button class="clear-filters" onclick="clearFilters()">Limpiar Filtros</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-content">
+        <div class="project-title-header" id="project-title-header" style="display: none;"></div>
+        <div class="situacion-critica-header" id="situacion-critica-header" style="display: none;"></div>
+        <div id="cards-wrapper"></div>
+        <div class="no-results" id="no-results" style="display: none;"></div>
+    </main>
+
+    <script>
+        const todosLosProyectos = [
+  {
+    "id": 1,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "IP- AUTOPISTAS DEL CARIBE CORREDOR DE CARGA CARTAGENA - BARRANQUILLA (RUTA CARIBE 2)",
+    "situacionCritica": "Terminación anticipada de Contrato",
+    "social": "IMPACTO ALTO - Comunidades solicitan terminación del contrato. Mesas de diálogo con Sabanagrande (comité 'No Más Peaje') y Galapa. 11 compromisos en Baranoa en seguimiento, 4 en Sabanagrande. Dificultades instalación peaje Arroyo de Piedra.",
+    "ambiental": "IMPACTO MEDIO - Licencia ambiental vigente UF 8 y 9. Tramitando licencia UF 4. ANLA realizó visita evaluación 16-18 julio 2025.",
+    "predial": "IMPACTO ALTO - Requiere 600 predios, adquirido 1. Fondeos subcuenta predial suspendidos. Concesionario solicitó suspensión gestión predial.",
+    "juridico": "IMPACTO ALTO - Memorando ANI 20256060127543 (30 abril 2025). EER por cierre financiero suspendió fondeos. 604 predios requeridos, 1 adquirido (predio 7-062). Gestión 'tácitamente' suspendida.",
+    "riesgos": "IMPACTO ALTO - Riesgos Menor Recaudo desde oct 2021: imposibilidad recaudo peajes Turbaco y Arroyo de Piedra, modificación estructura tarifaria. Compensaciones pagadas: $307,175 millones M/Cte (marzo 2025). Evaluando ampliación plazo hasta dic 2025 o reducción alcance 9 UF a 3 UF.",
+    "proximosPasos": "Definir posición de la Entidad sobre continuación del proyecto o terminación anticipada en marco del tribunal actual."
+  },
+  {
+    "id": 2,
+    "modo": "Carretero",
+    "generacion": "G4",
+    "proyecto": "IP - ANTIOQUIA - BOLIVAR",
+    "situacionCritica": "Rechazo reubicación de Peaje. Imposibilidad obtención disponibilidad predial.",
+    "social": "IMPACTO ALTO - Comunidad rechaza reubicación Peaje La Caimanera pese a jornadas socialización. Construyendo estrategia social para traslado identificando públicos objetivo.",
+    "ambiental": "IMPACTO ALTO - Concepto reubicación Peaje La Caimanera: revisar permisos ANLA según tramo. Riesgo ambiental activado por subcuenta compensaciones ambientales. Segundo comité previa aprobación realizado.",
+    "predial": "IMPACTO MEDIO - Requiere 1,286 predios, adquiridos 964 (75%). Longitud 338.02 Km, disponibles 334.92 Km (99%). Predios pendientes en gestión, adjudicación y expropiación.",
+    "juridico": "IMPACTO ALTO - 213 predios en expropiación. Problemas UF2: 12 predios en conflicto con ANUC-San Pelayo. Policía San Pelayo reporta contexto protesta social. Requiere Ministerio Público y UNDMO para entregas.",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Continuar seguimiento procesos expropiación e impulso procesal del concesionario."
+  },
+  {
+    "id": 4,
+    "modo": "Fluvial",
+    "generacion": "5G",
+    "proyecto": "Canal del Dique",
+    "situacionCritica": "Licenciamiento Ambiental",
+    "social": "IMPACTO ALTO - Esperando inicio EIA para definir área influencia y consultas previas comunidades étnicas. Protocolización consultas previas Calamar prevista agosto 2025.",
+    "ambiental": "IMPACTO ALTO - Aprobación fondeos costos licenciamiento ambiental. Radicar ANLA solicitud concepto mejoramiento UF10, 13 y 14.",
+    "predial": "IMPACTO ALTO - Requiere 653 predios, adquiridos 4 (0.6%). Gestión suspendida (Otrosí No.2) hasta licenciamiento. Riesgo: predios sobrantes, insuficiencia recursos, custodia deficiente. Pendientes 4 fondeos prediales.",
+    "juridico": "IMPACTO ALTO - Autorización PAGA UF10,13,14 implicaría levantar suspensión predial (217 predios mejoramiento). Solo 4 disponibles, 79 con insumos aprobados. Faltan avalúos.",
+    "riesgos": "IMPACTO MEDIO - Riesgo nuevas consultas activo, concesión radicó cuentas cobro compensación. Agosto: protocolizar 2 consultas previas. ANI compensa valores acordados comunidad.",
+    "proximosPasos": "Prevenir adquisición predial por incertidumbre diseños. Gestionar ante ANLA evitar cambios trazado."
+  },
+  {
+    "id": 6,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Mulaló – Loboguerrero",
+    "situacionCritica": "Laudos, fallos o decisiones tribunales arbitramiento",
+    "social": "IMPACTO ALTO - Preconstrucción: seguimiento obligaciones gestión social. Atención solicitudes Ministerio, Presidencia y entes control.",
+    "ambiental": "IMPACTO ALTO - ANLA: visita 23-25 abril, reuniones mayo 2025, 21 requerimientos EIA COVIMAR. 27 junio 2025: COVIMAR solicitó suspensión por Fuerza Mayor trámite modificación licencia.",
+    "predial": "IMPACTO ALTO - Requiere 165 predios, adquiridos 142 (86%), disponibles 156 (92.73%). Longitud 31.83 Km, disponibles 26.71 Km (84%). Riesgo: predios sobrantes sin custodia si no ejecuta.",
+    "juridico": "IMPACTO ALTO - Tribunal arbitral CCB 144229: COVIMAR busca terminación anticipada. 156 predios sin utilización (27 Km), ANI sin instrumentos administración/custodia, difícil retroventa.",
+    "riesgos": "IMPACTO ALTO - Tribunal internacional: desequilibrio económico por fuerza mayor ambiental +90 días (no licencia). Pérdida valor aportes vigencias futuras. Evaluar negociación.",
+    "proximosPasos": "Fortalecer conciliación continuidad proyecto. Eventual terminación: revertir predios a INVIAS. Formular lineamientos predios intervenidos."
+  },
+  {
+    "id": 7,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Accesos Norte de Bogotá",
+    "situacionCritica": "Compras áreas prediales adicionales por cambios diseños, estudios detalle y licencia ambiental",
+    "social": "IMPACTO ALTO - Sin dificultades sociales. Actividades Accesos Norte II se reflejan en este proyecto. Supervisión actividades sociales en curso.",
+    "ambiental": "IMPACTO ALTO - Modificación LA1 UF3: concesionario radicó información adicional 11/06/2025. Comunidad solicitó Audiencia Pública. Fechas: 30 agosto audiencia preparatoria, 27 septiembre audiencia pública.",
+    "predial": "IMPACTO ALTO - Requiere 121 predios, adquiridos 79 (65.3%). Longitud 61.81 Km, disponibles 61.78 Km (99.9%). UF3 Carretera Andes: revisar afectación predial, costos y riesgo. Riesgo predios sobrantes.",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Prevenir adquisición predial por incertidumbre cambios diseño/licencia. Gestionar ante ANLA evitar cambios trazado."
+  },
+  {
+    "id": 10,
+    "modo": "Ferreo",
+    "generacion": "Infraestructura",
+    "proyecto": "Corredor Ferreo - Bogotá Belencito",
+    "situacionCritica": "Atrasos desembolsos compensaciones socioeconómicas",
+    "social": "IMPACTO ALTO - Afectación Unidad Social Raúl Bedoya generó tensiones. Demanda penal contra 2 profesionales VPRE por presunta estafa. Unidad Social en vulnerabilidad requiere acompañamiento institucional.",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Emitir resolución para desembolso. Asistencia Unidad Social en estado vulnerabilidad."
+  },
+  {
+    "id": 11,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Santana Mocoa Neiva",
+    "situacionCritica": "Oposición instalación de peajes",
+    "social": "IMPACTO ALTO - Crisis desde marzo por oposición comunidades instalación peajes Huila y Putumayo. Mesas diálogo sin avances por posición radical 'Cero Peajes'. Corregimiento Riverita (Rivera): cierres parciales solicitando glorieta acceso centro poblado.",
+    "ambiental": "IMPACTO ALTO - Viaductos Pericongo: MADS expediente SRF-00666 pendiente acto administrativo sustracción reserva forestal. CAM expidió términos referencia, concesionario solicitó acotamiento faja río Magdalena. Variante Puerto Caicedo UF7: EIA pendiente DANCP Mininterior.",
+    "predial": "IMPACTO MEDIO - Requiere 955 predios, adquiridos 445 (46.6%). Longitud 509.16 Km, disponibles 383.82 Km (75%). Trámite Otrosí modificación ancho DV UF1 y 7. Gestión predial UF7 suspendida por licenciamiento.",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO MEDIO - Oposiciones comunidad instalación nuevos peajes afectarían instalación/operación casetas, impactando ingresos por peaje del proyecto.",
+    "proximosPasos": "Participación espacios diálogo Ministerio Interior. Comunidad manifiesta sin acuerdos gobierno nacional."
+  },
+  {
+    "id": 12,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Popayan Santander de Quilichao",
+    "situacionCritica": "Retrasos inicio de obras",
+    "social": "IMPACTO MEDIO - Dificultades construcción peajes. Concesionario instaló casetas temporales 'pedagógicas' vandalizadas con artefactos explosivos. ANI solicitó estrategia social socialización comunidades destacando tarifas diferenciales.",
+    "ambiental": "IMPACTO MEDIO - Sin dificultades ambientales. Seguimiento ejecución planes compensación biótico 4 UF con retraso considerable. Uso subcuenta compensaciones ambientales estimado sobrepasará 120%.",
+    "predial": "IMPACTO MEDIO - Requiere 2,773 predios, adquiridos 351 (12.6%). Longitud 76.07 Km, disponibles 65.64 Km (86.3%). Modificación contractual ancho corredor en trámite. Concesionario adquiriendo predios por fases.",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO MEDIO - Actualizando seguimiento plan aportes MHCP: riesgo comercial DR8, sobrecosto predial, sobrecosto redes. Cambios por modificación ancho corredor y actualización precios mercado. Pendiente definición cambio especificaciones Manual Señalización.",
+    "proximosPasos": "No hay información disponible"
+  },
+  {
+    "id": 13,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Pamplona Cucuta",
+    "situacionCritica": "DR8",
+    "social": "IMPACTO MEDIO - Compromisos comunidad en revisión: Retorno El Diamante (priorizar construcción), uso comunitario Corozal (salón comunal, esperando respuesta), parqueadero Guayabales (no viable, área privada).",
+    "ambiental": "IMPACTO BAJO - Sin dificultades ambientales a la fecha.",
+    "predial": "IMPACTO BAJO - Requiere 380 predios, adquiridos 346 (91.3%). Longitud 112.48 Km, disponibles 112.48 Km (100%).",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO MEDIO - Riesgo Comercial a cargo Entidad. Actualizando Planes Aporte ante MHCP.",
+    "proximosPasos": "Subsanar observaciones. Obtener aprobación MHCP. Girar recursos Fiduprevisora. Pago Concesionarios."
+  },
+  {
+    "id": 15,
+    "modo": "Carretero",
+    "generacion": "5G",
+    "proyecto": "Troncal Magdalena I - Puerto Salgar - Barrancabermeja",
+    "situacionCritica": "Afectaciones Socioeconómicas",
+    "social": "IMPACTO MEDIO - Repercusiones condiciones vida, acceso medios subsistencia y estabilidad económica comunidades locales por diseños actuales. Variantes desviarían tráfico afectando economía formal/informal dependiente flujo vehicular.",
+    "ambiental": "IMPACTO MEDIO - Proyecto con licencias/permisos subrogados Ruta del Sol 2. Concesionario no recibió 2 licencias ambientales y 5 permisos regionales, proceso incumplimiento contractual en curso. Comunidades oponen construcción variantes.",
+    "predial": "IMPACTO MEDIO - Requiere 835 predios, adquiridos 361 (43.2%). Longitud 300.81 Km, disponibles 220.02 Km (73.14%). Concesionario saneando predios gestión inconclusa Ruta del Sol 2.",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Pronunciarse viabilidad solicitudes comunidad. Implicaciones cambios diseños."
+  },
+  {
+    "id": 16,
+    "modo": "Carretero",
+    "generacion": "5G",
+    "proyecto": "Troncal Magdalena II",
+    "situacionCritica": "Afectaciones Socioeconómicas",
+    "social": "IMPACTO MEDIO - Repercusiones condiciones vida, acceso medios subsistencia y estabilidad económica comunidades locales por diseños actuales. Variantes desviarían tráfico afectando economía formal/informal dependiente flujo vehicular.",
+    "ambiental": "IMPACTO MEDIO - Licencias/permisos subrogados Ruta del Sol 2 en titularidad Concesionario. Actividades cumplimiento acción popular Quebrada Torcoroma por extracción materiales Concesionaria anterior.",
+    "predial": "IMPACTO MEDIO - Requiere 1,375 predios, adquiridos 871 (63.3%). Longitud 245.55 Km, disponibles 151.07 Km (61.52%). Concesionario saneando predios gestión inconclusa Ruta del Sol 2.",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO MEDIO - Riesgo tarifario materializado por aplicación Decreto 050.",
+    "proximosPasos": "Pronunciarse viabilidad solicitudes comunidad. Implicaciones cambios diseños."
+  },
+  {
+    "id": 17,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "IP Tercer Carril Bogotá Girardot",
+    "situacionCritica": "Pasivos Prediales",
+    "social": "IMPACTO MEDIO - Barrio Molino Rojo Silvania (UF6): ocupación indebida derecho vía. Comunicaciones enviadas, denuncias presentadas. Alcaldía no gestionó recuperación área. Inconformidad comunitaria persiste.",
+    "ambiental": "IMPACTO MEDIO - Resolución 0557/2001: conducción aguas sector hacia fuente hídrica cercana. CAR remitió expediente a ANLA. Esperando pronunciamiento ANLA para proceder según normatividad.",
+    "predial": "IMPACTO MEDIO - Requiere 1,303 predios, adquiridos 510 (39.1%). Longitud 289.86 Km, disponibles 240.48 Km (82.9%).",
+    "juridico": "IMPACTO MEDIO - Demoras disponibilidad 'pasivos prediales BGG-3G'. Concesionario indica ANI debe gestionar. ANI reconoció 6 EER responsabilidad 30 predios bloqueantes. Analizando Otrosí concesionario gestione, otros predios ANI gestiona (sin definir cómo).",
+    "riesgos": "IMPACTO MEDIO - Solicitudes Tarifa Diferencial Veedor Chinauta y Concejal Granada activarían Riesgo Tarifario peajes Chusacá y Chinauta. IP sin Plan Aportes, activaría mecanismos compensación Sección 3.2 Contrato.",
+    "proximosPasos": "Viabilizar jurídicamente traslado obligaciones saneamiento a contratos concesión vigentes. Gestionar contratación terceros especializados gestión predial."
+  },
+  {
+    "id": 22,
+    "modo": "Carretero",
+    "generacion": "3G",
+    "proyecto": "Ruta del Sol II",
+    "situacionCritica": "Saneamiento y cierre procesos prediales inconclusos por terminación anticipada",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "IMPACTO ALTO - Tramo 8: 28 predios. Lineamientos gestión recursos ANI culminación procesos gestión predial inconclusos derivados terminación anticipada Contrato Concesión 001/2010 Ruta del Sol Sector 2, liquidado/nulo según laudo arbitral 6 agosto 2019. Predios Tramo Transversal Rio de Oro Aguaclara Gamarra.",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Viabilizar jurídicamente traslado obligaciones saneamiento a contratos concesión vigentes. Gestionar contratación terceros especializados gestión predial."
+  },
+  {
+    "id": 23,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Perimetral de Oriente",
+    "situacionCritica": "Laudos, fallos o decisiones tribunales arbitramiento",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "IMPACTO ALTO - Intervenciones UF4 y UF5 suspendidas por hallazgo puntos interés hídrico (EER 1 agosto 2018). 19 diciembre 2024: Tribunal decidió terminación anticipada. Fase reversión: ANI instrucciones oficio 20253060161021 (12 mayo 2025) acciones según etapa gestión predial UF4 y UF5.",
+    "juridico": "IMPACTO ALTO - Predios Etapa 1: elevando solicitudes oficinas registro levantamiento ofertas inscritas. Predios Etapa 2: resciliación y recuperación recursos, caso contrario continuar adquisición.",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Fortalecer conciliación continuidad proyecto. Terminación: revertir predios ANI a INVIAS custodia. Formular lineamientos predios intervenidos. Resciliación procesos adquisición. Cierre gestión antes acta reversión."
+  },
+  {
+    "id": 24,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Pacífico 3",
+    "situacionCritica": "Vencimiento plazos adquisición predial",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "IMPACTO ALTO - Incumplimiento Concesionario términos Otrosí No.11, iniciación periodo cura y proceso sancionatorio. Esperando informe interventoría análisis 84 predios inventario predial Segunda Calzada y iniciación Plazo Cura Concesionario.",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Entrega informe interventoría análisis situación predios 2da calzada y solicitud iniciación plazo cura. Interventoría Consorcio Intercorredores. Fecha máxima entrega: 25 julio 2025."
+  },
+  {
+    "id": 25,
+    "modo": "Carretero",
+    "generacion": "3G",
+    "proyecto": "Córdoba Sucre",
+    "situacionCritica": "Renuncia adquisición predial",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "IMPACTO ALTO - Concesionario Autopistas Sabana S.A.S. renunciará poderes 122 procesos judiciales expropiación activos al alcanzar ingreso esperado. Memorando 20256060108163 (18/06/2025) a Vicepresidencia Jurídica: GIT Asesoría Jurídica Predial indica Concesionario debe continuar procesos expropiación hasta culminación marco contractual.",
+    "riesgos": "IMPACTO ALTO - insistir, de cara a la liquidación del Contrato de Concesión No. 002 de 2007, en la obligación que tiene el Concesionario de llevar los procesos de expropiación hasta la culminación, para que esta quede establecida en el acta. ",
+    "proximosPasos": "Insistir liquidación Contrato Concesión 002/2007 obligación Concesionario llevar procesos expropiación hasta culminación establecida en acta."
+  },
+  {
+    "id": 26,
+    "modo": "Carretero",
+    "generacion": "3G",
+    "proyecto": "Briceño Tunja Sogamoso",
+    "situacionCritica": "Pagos prediales inconclusos",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "IMPACTO ALTO - Hallazgo No.1271-20. 2010-2011: $585.44 millones pagos parciales propietarios predios variantes Tocancipá y Puente Boyacá. Procesos no concluyeron, INCO ordenó suspensión mayo 2011: adición no ratificada CONFIS y CONPES según CONPES 3535/2008.",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Establecer viabilidad descontar recursos del pago global ANI debe efectuar BTS Concesionario por valores fondeados exceso reconocidos Laudo Arbitral 1 febrero 2019."
+  },
+  {
+    "id": 27,
+    "modo": "Carretero",
+    "generacion": "4G",
+    "proyecto": "Bucaramanga Pamplona",
+    "situacionCritica": "Cierre Gestión Predial",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "IMPACTO ALTO - Predios en etapa 2 proyecto BUPA. Se encuentran en ejecución de continuar la adquisición predial.",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Cierre gestión antes acta liquidación. Obligación concesionario según oficio 20256060089821 y anexo acta terminación anticipada."
+  },
+  {
+    "id": 28,
+    "modo": "Varios",
+    "generacion": "Varios",
+    "proyecto": "Varios - Cambio Especificaciones",
+    "situacionCritica": "Manual Señalización Vial, Sistemas Contención Vehicular",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Manual Señalización Vial, Sistemas Contención Vehicular, otros por requerimientos ambientales. Mesas trabajo VPRE-VEJ desarrollándose.",
+    "proximosPasos": "Definición Entidad. Conceptos interventorías medir impacto. Concepto jurídico estado adopción resolución. Concepto riesgos verificación asignación riesgos contratos concesión."
+  },
+  {
+    "id": 29,
+    "modo": "Varios",
+    "generacion": "Varios",
+    "proyecto": "Varios - Evasión de Peajes",
+    "situacionCritica": "Riesgo evasión identificado",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Riesgo evasión a cargo Concesionario: 5G Nueva Malla Vial Valle Cauca Accesos Cali-Palmira, 4G Transversal del Sisga, 4G Tercer Carril, IP Chirajara Fundadores, IP Malla Vial del Meta.",
+    "proximosPasos": "No hay información disponible"
+  },
+  {
+    "id": 30,
+    "modo": "GIT Planeación",
+    "generacion": "Transversal",
+    "proyecto": "Revisión de las metas del Plan Estratégico Sectorial",
+    "situacionCritica": "Ajuste de metas con miras al cumplimiento del PES",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Se deben ajustar las metas con miras al cumplimiento del PES",
+    "proximosPasos": "Adelantar reuniones con las dependencias para realizar los ajustes a los que haya lugar.",
+    
+    "estadoActual": "La OAP del MT remitió observaciones del seguimiento del PES del segundo trimestre."
+  },
+  {
+    "id": 31,
+    "modo": "GIT Planeación",
+    "generacion": "Transversal",
+    "proyecto": "Reprogramación de Vigencias Futuras",
+    "situacionCritica": "Vacío normativo que no permite la reprogramación de anualidades VF APP",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Se identificó un vacío normativo que no permite la reprogramación de las anualidades de las VF APP",
+    "proximosPasos": "Se remitió propuesta decreto y memoria justificativa a VJ para su revisión y comentarios.",
+    "descripcion": "Se identifico un vacío normativo que no permite la reprogramación de las anualidades de las VF APP ",
+    "estadoActual": "Propuesta de modificación del artículo  2.2.2.1.11.8. Reprogramaciones de las vigencias futuras APP, elaborada por el DNP y el MHCP"
+
+  },
+  {
+    "id": 32,
+    "modo": "GIT Planeación",
+    "generacion": "Transversal",
+    "proyecto": "Pago de Vigencias Expiradas – Pasivos Exigibles",
+    "situacionCritica": "Intereses moratorios y sanciones CGR por no pago pasivos exigibles",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - No pagar los pasivos exigibles genera el pago de intereses moratorios y por lo tanto investigaciones y sanciones de la CGR",
+    "proximosPasos": "Vicepresidencias Estructuración y Gestión Contractual tramitando certificación vigencia expirada para firma presidente ANI.",
+    "descripcion": "No pagar los pasivos exigibles genera el pago de intereses moratorios y por lo tanto  investigaciones y sanciones de la CGR",
+    "estadoActual": "Contractual tramita un traslado presupuestal para completar recursos necesarios para pago vigencias expiradas del proyecto de Apoyo a puertos. Estructuración  también tramita pago de pasivos exigibles."
+  },
+  {
+    "id": 33,
+    "modo": "GIT Planeación",
+    "generacion": "Transversal",
+    "proyecto": "Redistribución de Cuota de Gasto",
+    "situacionCritica": "Apalancamiento proyectos inversión importancia estratégica sector transporte",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Apalancamiento de proyectos de inversión de importancia estratégica para el sector transporte",
+    "proximosPasos": "Una vez MHCP asigne nuevo techo se debe incluir distribución recursos en cuota gasto 2026 en PIIP.",
+    "descripcion": "Apalancamiento de proyectos de inversión de importancia estratégica para el sector transporte",
+    "estadoActual": "Reunión con Presidente de la República. Instrucción para ampliar techos de gasto para incluir recursos del FIP."
+  },
+  {
+    "id": 34,
+    "modo": "GIT Planeación",
+    "generacion": "Transversal",
+    "proyecto": "Realizar la Audiencia Pública de Rendición de Cuentas Institucional 2025",
+    "situacionCritica": "Proceso anual requiere 3 meses coordinación y desarrollo",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Se debe rendir cuentas anualmente, el proceso requiere de 3 meses para su coordinación y desarrollo",
+    "proximosPasos": "Adelantar reunión con Presidente para definición del evento.",
+    "descripcion": "Se debe rendir cuentas anualmente, el proceso requiere de 3 meses para su coordinación y desarrollo",
+    "estadoActual": "Se formuló propuesta de énfasis del evento y fecha de realización",
+    
+  },
+  {
+    "id": 35,
+    "modo": "GIT Planeación",
+    "generacion": "Transversal",
+    "proyecto": "Plan de mejoramiento institucional",
+    "situacionCritica": "Incumplimiento de planes tiene implicaciones disciplinarias",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - El incumplimiento de los planes tiene implicaciones disciplinarias",
+    "proximosPasos": "Dar prioridad a ejecución de las actividades.",
+    "descripcion": "El incumplimiento de los planes tiene implicaciones disciplinarias",
+    "estadoActual": "En ejecución plan de choque formulado"
+  },
+  {
+    "id": 36,
+    "modo": "GIT TIC",
+    "generacion": "Transversal",
+    "proyecto": "Soporte crítico y cambio de versión actual del sistema Orfeo",
+    "situacionCritica": "Interrupción del acceso a información crítica y procesos documentales",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO MEDIO - Interrupción del acceso a información crítica y procesos documentales",
+    "proximosPasos": "Implementar nueva versión gestor documental actual o nuevo. Plan trabajo ajustes fecha propuesta 15 septiembre 2025. Implementación nuevo gestor documental sin fecha.",
+    "descripcion": "Interrupción del acceso a información crítica y procesos documentales.",
+    "estadoActual": "Ajustes conforme a plan de trabajo."
+  },
+  {
+    "id": 37,
+    "modo": "GIT TIC",
+    "generacion": "Transversal",
+    "proyecto": "Adquirir e implementar sistema o solución para talento humano e inventarios",
+    "situacionCritica": "Afectación eficiencia operativa y toma de decisiones",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Afectación de la eficiencia operativa y toma de decisiones",
+    "proximosPasos": "Realización sesiones con proponentes interesados. En cabeza Gerente GIT TIC y equipo nómina e inventarios. Diciembre 2025.",
+    "descripcion": "Afectación de la eficiencia operativa y toma de decisiones.",
+    "estadoActual": "Recepción de 2 respuestas previa publicación de RFI en tienda virtual."
+  },
+  {
+    "id": 38,
+    "modo": "GIT TIC",
+    "generacion": "Transversal",
+    "proyecto": "Retorno infraestructura tecnológica Centro de Datos Colocación – Sede Bogotá",
+    "situacionCritica": "Riesgo de interrupción del servicio",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO MEDIO - Riesgo de interrupción del servicio",
+    "proximosPasos": "Realización pruebas disponibilidad servicios pre y post. Traslado Infraestructura Tecnológica. En cabeza Gerente GIT, equipo infraestructura y empresa HostDime. 6 y 7 agosto 2025.",
+    "descripcion": "Riesgo de interrupción del servicio",
+    "estadoActual": "El retorno está programado para el día 6 de agosto con pruebas el 7 de agosto de 2025."
+  },
+  {
+    "id": 39,
+    "modo": "GIT Valorización",
+    "generacion": "Transversal",
+    "proyecto": "Contrataciones estratégicas (Contratación levantamiento información técnica para adelantar censo predial + Contratación Herramienta tecnológica)",
+    "situacionCritica": "Aplicar y distribuir proyectos prioritarios CNV para censo predial y herramienta tecnológica",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - Para aplicar y distribuir los dos proyectos prioritarios de la CNV (Autopistas al Mar 2, Conexión Pacífico 1) se requiere realizar el Censo predial y tener la herramienta tecnológica en funcionamiento",
+    "proximosPasos": "Enviar documentos pre-contractuales para revisión y aprobación área contratación ANI. Celebración y legalización contrataciones.",
+    "descripcion": "Aplicar y distribuir los dos proyectos prioritarios de la CNV (Autopistas al Mar 2, Conexión Pacifico 1) se requiere realizar el Censo predial y tener la herramienta tecnológica en funcionamiento",
+    "estadoActual": "En estructuración de los documentos pre-contractuales para llevar a cabo las contrataciones."
+  },
+  {
+    "id": 40,
+    "modo": "GIT Valorización",
+    "generacion": "Transversal",
+    "proyecto": "Fortalecimiento equipo técnico",
+    "situacionCritica": "14 proyectos con potencial de cobro valorización requieren estructuración documentos perfilamiento",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "IMPACTO ALTO - A la fecha existen 14 proyectos con potencial de cobro de valorización, se hace necesario estructurar los documentos de perfilamiento",
+    "proximosPasos": "Recibir aprobación y/o lineamientos contratación por parte Presidencia ANI y Vicepresidencia.",
+    "descripcion": "A la fecha existen 14 proyectos con potencial de cobro de valorización, se hace necesario estructurar los documentos de perfilamiento",
+    "estadoActual": "Se presenta al Vicepresidente la necesidades de personal con los perfiles técnicos requeridos para avanzar con los documentos de  perfilamiento de los proyectos que se presentarán ante el Comité de calificación y priorización de proyectos"
+  },
+  {
+    "id": 18,
+    "modo": "Varios",
+    "generacion": "Reversión",
+    "proyecto": "Varios - Reversiones",
+    "situacionCritica": "Obligaciones ambientales pendientes",
+    "social": "No hay información disponible",
+    "ambiental": "IMPACTO MEDIO - Obligaciones ambientales pendientes y eventuales pasivos ambientales. Trabajando con Puertos y algunos carreteros.",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Proyecto Piloto Cartagena. Conversación ANLA y Autoridades ambientales."
+  },
+  {
+    "id": 19,
+    "modo": "Varios",
+    "generacion": "Gestión",
+    "proyecto": "Varios - Defensa Judicial Estado-temas ambientales-Gestión Riesgo y Cambio Climático",
+    "situacionCritica": "Fortalecimiento técnico y mapificación riesgos climáticos",
+    "social": "No hay información disponible",
+    "ambiental": "IMPACTO ALTO - Fortalecer equipo técnico. Mapificación y caracterización: escenarios cambio climático activarán riesgos futuro, requiere desarrollo componente apéndices, documentos y procesos institucionales.",
+    "predial": "No hay información disponible",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Inclusión capítulos detallados manuales referencia diseño: INVIAS, Lineamientos LIVV, LIV Férreos, Portuarios: PGRD y Cambio Climático. Mecanismos activación inter institucional."
+  },
+  {
+    "id": 20,
+    "modo": "Carretero",
+    "generacion": "Reversión - 3G",
+    "proyecto": "Bosa Granada Girardot",
+    "situacionCritica": "Saneamiento y cierre procesos prediales inconclusos por terminación anticipada",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "IMPACTO ALTO - Falta recursos humanos, económicos y técnicos culminar gestión predial. Pagos predios no usados, efectos fiscales. Retrasos obras proyectos vigentes. Conflictos sociales/judiciales propietarios. ANI adelanta gestión negociaciones inconclusas 'Doble Calzada Bogotá-Girardot'. Tramitando Otrosí contrato concesión 004/2016 incluya gestión predial pendiente BGG a concesionario Vía 40 Express.",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Viabilizar jurídicamente traslado obligaciones saneamiento a contratos concesión vigentes. Gestionar contratación terceros especializados gestión predial."
+  },
+  {
+    "id": 21,
+    "modo": "Carretero",
+    "generacion": "Reversión - 3G",
+    "proyecto": "Zona Metropolitana de Bucaramanga",
+    "situacionCritica": "Saneamiento y cierre procesos prediales inconclusos por terminación anticipada",
+    "social": "No hay información disponible",
+    "ambiental": "No hay información disponible",
+    "predial": "IMPACTO ALTO - 50 predios. Convenio Interadministrativo 1113/2016: INVIAS, ANI, Municipio Bucaramanga, Gobernación Santander, IDESAN (FINDETER), Aeronáutica Civil. Elaborando modificación contractual convenio INVIAS-ANI determinar predios adquirir cada entidad. ANI obligada adquirir predios faltantes.",
+    "juridico": "No hay información disponible",
+    "riesgos": "No hay información disponible",
+    "proximosPasos": "Viabilizar jurídicamente traslado obligaciones saneamiento"
+    }
+];
+        
+        let vistaActual = { tipo: 'lista', categoria: 'all' };
+
+        const getImpactLevel = (text) => {
+            if (!text) return null;
+            const match = text.match(/IMPACTO (ALTO|MEDIO|BAJO)/);
+            return match ? match[1] : null;
+        };
+
+        const isSpecialGitCategory = (mode) => ['GIT Planeación', 'GIT TIC', 'GIT Valorización'].includes(mode);
+
+        const determinarImpactoGeneral = (proyecto) => {
+            const fields = ['social', 'ambiental', 'predial', 'juridico', 'riesgos', 'estadoActual'];
+            if (fields.some(f => getImpactLevel(proyecto[f]) === 'ALTO')) return 'ALTO';
+            if (fields.some(f => getImpactLevel(proyecto[f]) === 'MEDIO')) return 'MEDIO';
+            return 'BAJO';
+        };
+
+        const cleanImpactText = (text) => {
+            if (!text) return 'No hay información disponible';
+            return text.replace(/IMPACTO (ALTO|MEDIO|BAJO)\s*-?\s*/, '').trim();
+        };
+
+        const getBadgeClass = (modo) => {
+            if (modo.toLowerCase().includes('carretero')) return 'badge-carretero';
+            if (modo.toLowerCase().includes('ferreo')) return 'badge-ferreo';
+            if (modo.toLowerCase().includes('aereo')) return 'badge-aereo';
+            if (modo.toLowerCase().includes('git')) return 'badge-git';
+            return 'badge-carretero';
+        };
+
+        const getGenerationBadgeClass = (generacion) => {
+            if (generacion.includes('4G')) return 'badge-4g';
+            if (generacion.includes('3G')) return 'badge-3g';
+            return 'badge-git';
+        };
+
+        function createModernProjectCard(proyecto, index) {
+            const impactoGeneral = determinarImpactoGeneral(proyecto);
+            const badgeClass = getBadgeClass(proyecto.modo);
+            const genBadgeClass = getGenerationBadgeClass(proyecto.generacion);
+            
+            return `
+                <div class="modern-project-card" onclick="verDetalle(${index})">
+                    <div class="modern-card-header">
+                        <div class="modern-card-title">${proyecto.proyecto}</div>
+                        <div class="modern-card-subtitle">${proyecto.situacionCritica}</div>
+                        <div class="modern-badges-row">
+                            <span class="modern-badge ${badgeClass}">${proyecto.modo}</span>
+                            ${proyecto.generacion !== 'N/A' ? `<span class="modern-badge ${genBadgeClass}">${proyecto.generacion}</span>` : ''}
+                            <span class="modern-badge impact-badge-${impactoGeneral.toLowerCase()}">${impactoGeneral} IMPACTO</span>
+                        </div>
+                    </div>
+                    <div class="modern-card-body">
+                        <div class="situation-text">${proyecto.situacionCritica}</div>
+                    </div>
+                    <div class="modern-card-footer">
+                        <button class="view-details-btn">Ver detalles</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createGitCard(categoria, data) {
+            const impactLevel = getImpactLevel(data);
+            if (!impactLevel) return '';
+            const categoriaNames = { social: 'SOCIAL', ambiental: 'AMBIENTAL', predial: 'PREDIAL', juridico: 'JURÍDICO', riesgos: 'RIESGOS' };
+            const categoriaIcons = { social: '👥', ambiental: '🌿', predial: '🏘️', juridico: '⚖️', riesgos: '⚠️' };
+            return `<div class="topic-card"><div class="card-header git-${categoria}"><div>${categoriaIcons[categoria]} ${categoriaNames[categoria]}</div><div class="impact-badge-card impact-${impactLevel.toLowerCase()}">${impactLevel}</div></div><div class="card-content"><div class="impact-description">${cleanImpactText(data)}</div></div></div>`;
+        }
+
+        function renderContent() {
+            const mainContent = document.getElementById('main-content');
+            Object.values(mainContent.children).forEach(child => child.style.display = 'none');
+            
+            if (vistaActual.tipo === 'detalle') {
+                renderSingleProjectView(todosLosProyectos[vistaActual.index]);
+            } else {
+                renderAllProjectsView();
+            }
+        }
+
+        function renderSingleProjectView(proyecto) {
+            const cardsWrapper = document.getElementById('cards-wrapper');
+            cardsWrapper.style.display = 'block';
+            cardsWrapper.className = '';
+
+            document.getElementById('project-title-header').style.display = 'block';
+            document.getElementById('situacion-critica-header').style.display = 'flex';
+            actualizarInfoProyecto(proyecto);
+            
+            document.getElementById('stat-mostrados').textContent = 1;
+        }
+
+        function renderAllProjectsView() {
+            const cardsWrapper = document.getElementById('cards-wrapper');
+            const noResults = document.getElementById('no-results');
+            
+            // Aplicar filtros
+            let projectsToDisplay = todosLosProyectos.filter(p => {
+                const categoriaMatch = vistaActual.categoria === 'all' || p.modo === vistaActual.categoria;
+                const situacionFilter = document.getElementById('filter-situacion').value;
+                const situacionMatch = !situacionFilter || p.situacionCritica === situacionFilter;
+                const impactoFilter = document.getElementById('filter-impacto').value;
+                const impactoGeneral = determinarImpactoGeneral(p);
+                const impactoMatch = !impactoFilter || impactoGeneral === impactoFilter;
+                
+                return categoriaMatch && situacionMatch && impactoMatch;
+            });
+
+            cardsWrapper.style.display = 'grid';
+            cardsWrapper.className = 'modern-cards-container';
+            
+            if (projectsToDisplay.length > 0) {
+                cardsWrapper.innerHTML = projectsToDisplay.map(p => createModernProjectCard(p, todosLosProyectos.indexOf(p))).join('');
+                noResults.style.display = 'none';
+            } else {
+                cardsWrapper.style.display = 'none';
+                noResults.style.display = 'block';
+                noResults.innerHTML = 'No se encontraron proyectos que coincidan con los filtros seleccionados.';
+            }
+            document.getElementById('stat-mostrados').textContent = projectsToDisplay.length;
+        }
+
+        function actualizarInfoProyecto(proyecto) {
+            const impactoGeneral = determinarImpactoGeneral(proyecto);
+            document.getElementById('project-title-header').innerHTML = `<button class="back-button" onclick="volverALista()">❮ Volver a la lista</button><div class="project-title-text">${proyecto.proyecto}</div><div class="project-meta-badges"><span class="meta-badge">📊 ${proyecto.modo}</span><span class="meta-badge">🏗️ ${proyecto.generacion}</span><span class="meta-badge">⚠️ ${impactoGeneral} IMPACTO</span></div>`;
+            document.getElementById('situacion-critica-header').innerHTML = `<div class="situacion-critica-icon">⚠️</div><div class="situacion-critica-content"><h3>Situación Crítica</h3><div class="situacion-critica-text">${proyecto.situacionCritica}</div></div>`;
+
+            // Mostrar todas las categorías GIT sin filtros adicionales en vista de detalle
+            let cardsHTML = '';
+            ['social', 'ambiental', 'predial', 'juridico', 'riesgos'].forEach(cat => {
+                if (proyecto[cat]) {
+                    cardsHTML += createGitCard(cat, proyecto[cat]);
+                }
+            });
+            const proximosPasosHTML = (proyecto.proximosPasos && proyecto.proximosPasos !== "No hay información disponible") ? `<div class="proximos-pasos-card"><div class="proximos-pasos-header">🎯 PRÓXIMOS PASOS</div><div class="proximos-pasos-content">${proyecto.proximosPasos}</div></div>` : '';
+            document.getElementById('cards-wrapper').innerHTML = `<div class="git-cards-wrapper"><div class="git-cards-title"><h2>📊 Análisis por Categorías GIT</h2></div><div class="cards-container">${cardsHTML}</div>${proximosPasosHTML}</div>`;
+        }
+
+        function verDetalle(index) {
+            vistaActual = { tipo: 'detalle', index: index };
+            renderContent();
+        }
+        
+        function volverALista() {
+            vistaActual = { tipo: 'lista', categoria: document.getElementById('category-selector').value };
+            renderContent();
+        }
+        
+        function poblarSelectorCategorias() {
+            const selector = document.getElementById('category-selector');
+            selector.innerHTML = '<option value="all">Todas las Categorías</option>';
+            const categoryOrder = ['Carretero', 'Ferreo', 'Aereo', 'Fluvial', 'GIT Planeación', 'GIT TIC', 'GIT Valorización', 'Varios'];
+            const allCategories = [...new Set(todosLosProyectos.map(p => p.modo))];
+            const orderedCategories = [...categoryOrder.filter(cat => allCategories.includes(cat)), ...allCategories.filter(cat => !categoryOrder.includes(cat))];
+            orderedCategories.forEach(modo => selector.innerHTML += `<option value="${modo}">${modo}</option>`);
+        }
+        
+        function poblarSelectorSituaciones() {
+            const selector = document.getElementById('filter-situacion');
+            const situaciones = [...new Set(todosLosProyectos.map(p => p.situacionCritica))].sort();
+            selector.innerHTML = '<option value="">Todas</option>';
+            situaciones.forEach(situacion => {
+                selector.innerHTML += `<option value="${situacion}">${situacion}</option>`;
+            });
+        }
+        
+        function handleCategoryFilterChange() {
+            vistaActual = { tipo: 'lista', categoria: this.value };
+            renderContent();
+        }
+        
+        function handleDetailFilterChange() {
+            if (vistaActual.tipo === 'lista') {
+                renderContent();
+            }
+        }
+        
+        function clearFilters() {
+            document.getElementById('category-selector').value = 'all';
+            document.getElementById('filter-situacion').value = '';
+            document.getElementById('filter-impacto').value = '';
+            vistaActual = { tipo: 'lista', categoria: 'all' };
+            renderContent();
+        }
+        
+        function volverATableroPrincipal() {
+            window.location.href = 'index.html';
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const proyectosCount = todosLosProyectos.filter(p => !isSpecialGitCategory(p.modo)).length;
+            const gitsCount = todosLosProyectos.filter(p => isSpecialGitCategory(p.modo)).length;
+            const categoriasCount = [...new Set(todosLosProyectos.map(p => p.modo))].length;
+            document.getElementById('stat-proyectos').textContent = proyectosCount;
+            document.getElementById('stat-gits').textContent = gitsCount;
+            document.getElementById('stat-categorias').textContent = categoriasCount;
+
+            poblarSelectorCategorias();
+            poblarSelectorSituaciones();
+            renderContent();
+            
+            document.getElementById('category-selector').addEventListener('change', handleCategoryFilterChange);
+            document.getElementById('filter-situacion').addEventListener('change', handleDetailFilterChange);
+            document.getElementById('filter-impacto').addEventListener('change', handleDetailFilterChange);
+            
+            console.log('✅ Tablero modernizado con diseño de tarjetas actualizado.');
+        });
+    </script>
+</body>
+</html>

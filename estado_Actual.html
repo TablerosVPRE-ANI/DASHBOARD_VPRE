@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado Actual Proyectos VPRE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, 
+                #003F78 0%,
+                #575756 35%,
+                #EC6608 70%,
+                #003F78 100%
+            );
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 63, 120, 0.3) 0%,
+                rgba(87, 87, 86, 0.4) 50%,
+                rgba(236, 102, 8, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        .nav-header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #EC6608, #d97706);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
+        }
+
+        .nav-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #EC6608, #f59e0b, #EC6608);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            color: #e8eaed;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* --- ESTILOS PARA LAS TARJETAS DE PROYECTO --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .project-card {
+            background-color: #FBEBDD;
+            border-radius: 20px;
+            padding: 25px;
+            color: #6B4F4F;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: #3D2C2C;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: #3D2C2C;
+            min-height: 56px;
+        }
+
+        .project-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-top: auto; /* Empuja los detalles hacia abajo */
+        }
+
+        .project-details li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .project-details li:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-details .detail-icon {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            color: #EC6608;
+            width: 20px; /* Ancho fijo para alineación */
+            text-align: center;
+            padding-top: 3px;
+        }
+        
+        .detail-text strong {
+            color: #3D2C2C;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-header">
+        <button class="back-button" onclick="goBack()">
+            ← Volver al Tablero Principal
+        </button>
+        <div class="nav-title">Proyectos VPRE</div>
+        <div style="width: 180px;"></div>
+    </nav>
+
+    <div class="main-container">
+        <div class="hero-section">
+            <h1 class="hero-title">Estado actual de los proyectos a cargo de la VPRE</h1>
+            <p class="hero-subtitle">Seguimiento de Avances - Agosto 2025</p>
+        </div>
+
+        <div class="projects-grid">
+            
+            <div class="project-card">
+                <div class="card-icon"><i class="fa-solid fa-desktop"></i></div>
+                <h3 class="project-title">Fortalecimiento al Sistema de Información Aniscopio</h3>
+                <ul class="project-details">
+                    <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>GIT A CARGO:</strong> GIT TIC</span></li>
+                    <li><i class="fa-solid fa-chart-line detail-icon"></i><span class="detail-text"><strong>Avance:</strong> 13.34%</span></li>
+                    <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Estado:</strong> Se ejecutan actividades de desarrollo para ajustes o nuevas funcionalidades en ANISCOPIO.</span></li>
+                </ul>
+            </div>
+
+            <div class="project-card">
+                <div class="card-icon"><i class="fa-solid fa-landmark-flag"></i></div>
+                <h3 class="project-title">Fortalecimiento del Gobierno de TI</h3>
+                <ul class="project-details">
+                    <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>GIT A CARGO:</strong> GIT TIC</span></li>
+                    <li><i class="fa-solid fa-chart-line detail-icon"></i><span class="detail-text"><strong>Avance:</strong> 25%</span></li>
+                    <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Estado:</strong> Se lideran y coordinan los proyectos asociados a los planes estratégicos PETI, PESI y PAA.</span></li>
+                </ul>
+            </div>
+            
+            <div class="project-card">
+                <div class="card-icon"><i class="fa-solid fa-server"></i></div>
+                <h3 class="project-title">Actualización y modernización de la infraestructura tecnológica On Premise</h3>
+                <ul class="project-details">
+                    <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>GIT A CARGO:</strong> GIT TIC</span></li>
+                    <li><i class="fa-solid fa-chart-line detail-icon"></i><span class="detail-text"><strong>Avance:</strong> 100%</span></li>
+                    <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Estado:</strong> Ejecución del Convenio Interadministrativo CI-015-2023 suscrito con la Agencia Nacional Digital.</span></li>
+                </ul>
+            </div>
+            
+            <div class="project-card">
+                <div class="card-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                <h3 class="project-title">Fortalecimiento de la estrategia de Uso y Apropiación de TI</h3>
+                <ul class="project-details">
+                    <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>GIT A CARGO:</strong> GIT TIC</span></li>
+                    <li><i class="fa-solid fa-chart-line detail-icon"></i><span class="detail-text"><strong>Avance:</strong> 50%</span></li>
+                    <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Estado:</strong> Se realizan diferentes campañas semanales alineadas a la adopción de buenas practicas TI.</span></li>
+                </ul>
+            </div>
+            
+            <div class="project-card">
+                <div class="card-icon"><i class="fa-solid fa-file-pen"></i></div>
+                <h3 class="project-title">Optimización Orfeo</h3>
+                <ul class="project-details">
+                    <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>GIT A CARGO:</strong> GIT TIC</span></li>
+                    <li><i class="fa-solid fa-chart-line detail-icon"></i><span class="detail-text"><strong>Avance:</strong> 100%</span></li>
+                    <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Estado:</strong> Se ajusta la carpeta de borradores para optimizar el acceso, consulta y firma de documentos.Se están revisando opciones para la actualización de esta herramienta a una versión más moderna o para su reemplazo.</span></li>
+                </ul>
+            </div>
+            
+            <div class="project-card">
+                <div class="card-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+                <h3 class="project-title">Implementación Contribución nacional de Valorización</h3>
+                 <ul class="project-details">
+                    <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>GIT A CARGO:</strong> GIT VAL</span></li>
+                    <li><i class="fa-solid fa-chart-line detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Aprobado</span></li>
+                    <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Estado:</strong> Tras comité (Julio 15, 2025), se expedirán Resoluciones para Autopistas al Mar 2 y Conexión Pacífico 1.</span></li>
+                </ul>
+            </div>
+
+        </div> 
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.project-title').textContent;
+                const status = this.querySelector('.detail-text:last-child').textContent;
+                alert(`Proyecto: ${title}\n\n${status}`);
+            });
+        });
+    </script>
+</body>
+</html>

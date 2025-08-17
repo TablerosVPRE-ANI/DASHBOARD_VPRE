@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Apuestas de Gestión 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, 
+                #003F78 0%,
+                #575756 35%,
+                #EC6608 70%,
+                #003F78 100%
+            );
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 63, 120, 0.3) 0%,
+                rgba(87, 87, 86, 0.4) 50%,
+                rgba(236, 102, 8, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        .nav-header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #EC6608, #f59e0b, #EC6608);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            color: #e8eaed;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .pillar-section {
+            margin-bottom: 50px;
+        }
+        
+        .pillar-title {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(5px);
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            line-height: 1.5;
+            border-left: 5px solid #EC6608;
+            animation: fadeInDown 0.6s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .pillar-title i {
+            font-size: 2rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: #003F78;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        .project-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-top: auto;
+        }
+
+        .project-details li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .project-details .detail-icon {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            color: #EC6608;
+            width: 20px;
+            text-align: center;
+            padding-top: 3px;
+        }
+        .detail-text strong { color: #003F78; }
+        
+        .progress-bar-container {
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            height: 28px;
+            width: 100%;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #d97706, #EC6608);
+            height: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-radius: 10px;
+            transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 0; /* Initial width for animation */
+        }
+        
+        a {
+            color: #EC6608;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2rem; }
+            .pillar-title { font-size: 1.3rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+        }
+        .back-button {
+    background: linear-gradient(135deg, #EC6608, #d97706);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
+}
+    </style>
+</head>
+<script>
+function goBack() {
+    console.log('🔙 Regresando al tablero principal...');
+    
+    // Mostrar mensaje de transición
+    const transitionMessage = document.createElement('div');
+    transitionMessage.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #003F78, #EC6608);
+        color: white;
+        padding: 25px 40px;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        z-index: 10000;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    `;
+    transitionMessage.innerHTML = `
+        <div style="font-size: 2rem; margin-bottom: 10px;">🏠</div>
+        <div>Regresando al Tablero Principal...</div>
+    `;
+    
+    document.body.appendChild(transitionMessage);
+    
+    // Navegar después de un breve delay
+    setTimeout(() => {
+        try {
+            window.location.href = 'index.html';
+        } catch (error) {
+            console.error('Error al navegar:', error);
+            if (transitionMessage.parentNode) {
+                transitionMessage.parentNode.removeChild(transitionMessage);
+            }
+            alert('❌ Error al regresar al tablero principal.\n\nVerifique que el archivo index.html existe en la misma carpeta.');
+        }
+    }, 1200);
+}
+</script>
+<body>
+<nav class="nav-header">
+    <button class="back-button" onclick="goBack()">
+        ← Volver al Tablero Principal
+    </button>
+    <div class="nav-title">Apuestas de Gestión</div>
+    <div style="width: 180px;"></div>
+</nav>
+
+    <div class="main-container">
+        <div class="hero-section">
+            <h1 class="hero-title">Apuestas de Gestión</h1>
+            <p class="hero-subtitle">Estado Actual y Proyecciones a 31 de Diciembre de 2025</p>
+        </div>
+
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-people-group"></i>GIT SOCIAL</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-file-signature"></i></div>
+                    <h3 class="project-title">Estandarizar y formalizar los procedimientos del GIT Social.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se están definiendo siete protocolos integrales que traducen los objetivos del GIT Social en lineamientos operativos, con alcance, responsabilidades y entregables claros.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Institucionalizar prácticas coherentes de gestión social en toda la ANI.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-chart-column"></i></div>
+                    <h3 class="project-title">Implementar estrategia robusta de recolección y análisis de indicadores.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se han validado instrumentos para la recolección de datos, consolidando información sobre el fortalecimiento de 1.755 unidades o iniciativas productivas.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Monitorear de forma efectiva el impacto de los proyectos en las zonas de influencia.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-database"></i></div>
+                    <h3 class="project-title">Establecer un repositorio sectorial de datos sociales.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se realizó inventario y clasificación de carpetas. Actualmente se trabaja en el diseño de un instrumento de gestión que preserve la integridad y el ciclo de vida de la información social.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Garantizar trazabilidad, confidencialidad y fácil acceso para la toma de decisiones.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-leaf"></i>GIT AMBIENTAL</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-seedling"></i></div>
+                    <h3 class="project-title">Asegurar la incorporación institucional de la Estrategia Global de Sostenibilidad.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Estrategia preparada para sustentación ante el comité directivo. En el segundo semestre se realizará la socialización interna, se formalizará la adopción y se iniciarán las primeras acciones.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Establecer el marco para el despliegue operativo de la estrategia en toda la ANI.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-map-location-dot"></i>GIT PREDIAL</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-ruler-horizontal"></i></div>
+                    <h3 class="project-title">Garantizar la longitud efectiva predial disponible.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Meta:</strong> 90%</span></li>
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se ha alcanzado un 91,25%, sin reportar dificultades en la entrega de predios. Esto ha favorecido la armonía con el cronograma.</span></li>
+                    </ul>
+                    <div class="progress-bar-container"><div class="progress-bar" data-progress="91.25">91.25%</div></div>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-house-flag"></i></div>
+                    <h3 class="project-title">Adquirir los predios requeridos para la ejecución de proyectos.</h3>
+                     <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-bullseye"></i><span class="detail-text"><strong>Meta:</strong> 75%</span></li>
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se ha logrado el 72,65%. Se está priorizando la culminación rápida de los procesos de gestión predial para cumplir con los procedimientos contractuales.</span></li>
+                    </ul>
+                    <div class="progress-bar-container"><div class="progress-bar" data-progress="72.65">72.65%</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-triangle-exclamation"></i>GIT RIESGOS</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="project-title">Asegurar disponibilidad de fondos para compensación de riesgos Comerciales DR8.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se avanza con atención de observaciones de MHCP para actualización de planes de aportes.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Contar con los fondos disponibles para los proyectos Popayán-Santander de Quilichao y Pamplona-Cúcuta.</span></li>
+                    </ul>
+                </div>
+                 <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-road"></i></div>
+                    <h3 class="project-title">Publicar boletín semestral de tarifas diferenciales en peajes.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> El primer boletín se encuentra en fase de consolidación y verificación de contenidos, antes de su publicación oficial.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Publicar oficialmente el primer boletín que difunda el uso y los resultados de la metodología.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-file-contract"></i></div>
+                    <h3 class="project-title">Publicar documento de análisis y formulación de estrategias para la gestión de riesgos.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se actualiza la información de los proyectos de 2024 para completar el análisis y preparar el documento definitivo.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Documento publicado, basado en la experiencia de los programas 4G y 5G.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-sitemap"></i></div>
+                    <h3 class="project-title">Diseñar metodología para aplicar mecanismos de compensación no líquidos.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se encuentra en proceso de análisis de la información recopilada.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Metodología clara y definida para proyectos de infraestructura.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-list-check"></i>GIT PLANEACIÓN</h2>
+            <div class="projects-grid">
+                 <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-landmark"></i></div>
+                    <h3 class="project-title">Coordinar con MinHacienda obtención de recursos para cubrir VF de las APP y pago de déficits.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se están documentando y archivando todas las constancias que respaldan la solicitud de recursos (anteproyectos, cartas, actas, etc.).</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Agotar todas las alternativas disponibles para garantizar el cumplimiento de las obligaciones contractuales.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h3 class="project-title">Disminuir la posibilidad de constitución de reservas y pasivos exigibles.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se realizan alertas presupuestales continuas para proyectos con ejecución < 30% y mesas de trabajo interáreas.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Fortalecer la ejecución financiera de los proyectos para el presupuesto 2025.</span></li>
+                        <li><i class="detail-icon fa-solid fa-link"></i><span class="detail-text"><a href="https://app.powerbi.com/view?r=eyJrIjoiYjIwZTVlZjYtNDVlNi00MjczLTk3MDMtMDRmNDU0NjJlNDQzIiwidCI6IjcwYzI2NjI2LWZmZjAtNGY1Yi1iNDI4LTNkY2I5NzViMmJiMCJ9" target="_blank">Ver Dashboard de Seguimiento</a></span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
+                    <h3 class="project-title">Ejecutar plan de trabajo de la Política de Gestión del Conocimiento.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> El plan está en desarrollo; se definirá a corto plazo el conjunto de documentos clave (memorias, guías) para su sistematización y socialización interna.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Capturar y difundir las lecciones aprendidas y mejores prácticas en la gestión de la entidad.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-arrows-to-circle"></i></div>
+                    <h3 class="project-title">Fortalecer la capacidad institucional mediante un proceso de seguimiento al Plan de Mejoramiento.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Desde junio de 2025, el GIT de Planeación asumió la coordinación del seguimiento, estableciendo mecanismos de monitoreo y reporte periódico de avance.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Implementar un proceso estructurado de seguimiento y ajuste al Plan de Mejoramiento Institucional.</span></li>
+                    </ul>
+                </div>
+                 <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-certificate"></i></div>
+                    <h3 class="project-title">Lograr la certificación de los sistemas de Gestión de Calidad (SGC) y de Gestión Ambiental (SGAS).</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se están elaborando los estudios previos necesarios; se proyecta iniciar el proceso formal de auditoría en el cuarto trimestre de 2025.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Institucionalizar estándares de excelencia operativa y de sostenibilidad.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-laptop-code"></i>GIT TIC</h2>
+            <div class="projects-grid">
+                 <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+                    <h3 class="project-title">Alinear y desplegar el Plan Estratégico de Sistemas de Información (PESI).</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Ampliación del equipo de trabajo a travez del aseguramiento de los recursos y el fortalecimiento de su continuidad.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Optimizar la gobernanza y soporte de las plataformas tecnológicas de la ANI.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3 class="project-title">Adaptar y ejecutar el Plan Estratégico de Tecnologías de Información (PETI).</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> No se presenta avance.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Robustecer la infraestructura y los servicios digitales de la entidad.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                    <h3 class="project-title">Impulsar la adopción de buenas prácticas TI y el uso eficaz de herramientas digitales.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se realizan campañas semanales de difusión. En octubre de 2025 se implementará el Proyecto de Aprendizaje en Equipo para consolidar la apropiación interna.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Mejorar significativamente la apropiación y uso de herramientas digitales en la entidad.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="pillar-section">
+            <h2 class="pillar-title"><i class="fa-solid fa-hand-holding-dollar"></i>GIT VALORIZACIÓN E INSTRUMENTOS FINANCIEROS</h2>
+            <div class="projects-grid">
+                 <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-gavel"></i></div>
+                    <h3 class="project-title">Expedir las resoluciones de aplicación de la Contribución Nacional de Valorización.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> En desarrollo. Se ha preparado el requerimiento administrativo y se presentará ante el Consejo Directivo en su sesión del 17 de septiembre de 2025.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Expedición de los actos correspondientes para "Autopistas al Mar 2" y "Conexión Pacífico 1".</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
+                    <h3 class="project-title">Definir y priorizar los proyectos susceptibles de cobro de valorización.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> En desarrollo. Tras la Sentencia C-244 de 2025, se revisa la priorización y se avanza en la elaboración de documentos de perfilamiento.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Evaluar las iniciativas (14 en total, con foco en 5) en el Comité de Calificación y Priorización entre octubre y noviembre de 2025.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-cash-register"></i></div>
+                    <h3 class="project-title">Contratar el levantamiento técnico de información predial y la plataforma tecnológica de gestión.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> En desarrollo. Se concluyen los documentos precontractuales y se ultiman detalles para enviarla al área de contratación. Se recibió propuesta económica de Datatools.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Implementar la plataforma para la gestión de la CNV en "Autopistas al Mar 2" y "Conexión Pacífico 1".</span></li>
+                    </ul>
+                </div>
+                 <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-cogs"></i></div>
+                    <h3 class="project-title">Formular e implementar el proceso integral de valorización e instrumentos financieros.</h3>
+                    <ul class="project-details">
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> En desarrollo. Se avanza en la definición de los procesos clave necesarios para la etapa de implementación de la Contribución Nacional de Valorización.</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Contar con los procedimientos, manuales, instructivos y formatos definidos.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+<div class="pillar-section">
+    <h2 class="pillar-title"><i class="fa-solid fa-scale-balanced"></i>GIT ASESORÍA JURÍDICA PREDIAL</h2>
+    <div class="projects-grid">
+        <div class="project-card">
+            <div class="card-icon"><i class="fa-solid fa-gavel"></i></div>
+            <h3 class="project-title">Cierre de la gestión predial del proyecto Córdoba Sucre.</h3>
+            <ul class="project-details">
+                <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se remitió Memorando Interno No. 20256060108163 del 18/06/2025, a Vicepresidencia Jurídica, colocando de presente la postura adoptada por el GIT de Asesoría Jurídica Predial.</span></li>
+                <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Es el Concesionario quien debe continuar con el adelantamiento de los procesos de expropiación activos hasta verificar la culminación de los mismos en el marco contractual.</span></li>
+            </ul>
+        </div>
+        
+        <div class="project-card">
+            <div class="card-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <h3 class="project-title">Briseño Tunja Sogamoso-Devolución de recursos empleados para pagos parciales la subcuenta predial del Contrato de Concesión No. 377 de 2002.</h3>
+            <ul class="project-details">
+                <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Actualmente se han venido adelantando las revisiones pertinentes encaminadas a determinar la procedencia de los recursos con los cuales se efectuaron los pagos parciales a los propietarios.</span></li>
+                <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Determinar si estos salieron de recursos propios del Concesionario, o si por el contrario su origen estuvo en la cuenta de predios asociada al contrato de concesión.</span></li>
+            </ul>
+        </div>
+        
+        <!-- ✨ TARJETA CONSOLIDADA 1: BUCARAMANGA PAMPLONA ✨ -->
+        <div class="project-card">
+            <div class="card-icon"><i class="fa-solid fa-building"></i></div>
+            <h3 class="project-title">Bucaramanga Pamplona</h3>
+            <ul class="project-details">
+                <li><i class="detail-icon fa-solid fa-map-pin"></i><span class="detail-text"><strong>Cierre de gestión predial:</strong> El concesionario se encuentra avanzando en predios en etapa 2.</span></li>
+                <li><i class="detail-icon fa-solid fa-file-invoice"></i><span class="detail-text"><strong>Revisión de carpetas:</strong> Actualmente el concesionario no ha hecho entrega de ninguna carpeta, son 172 predios adquiridos.</span></li>
+                <li><i class="detail-icon fa-solid fa-search"></i><span class="detail-text"><strong>Revisión Cercado y demolición:</strong> Se tiene hallazgo de contraloría con incidencia disciplinaria por deficiencia en cercados y en el acta de reversión con invías se dejaron observaciones relacionadas con el cumplimiento de las especificaciones técnicas.</span></li>
+                <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Completar la gestión predial en todas las etapas establecidas y finalizar la revisión de carpetas y procesos de cercado.</span></li>
+            </ul>
+        </div>
+        
+        <!-- ✨ TARJETA CONSOLIDADA 2: CORREDOR PERIMETRAL ✨ -->
+        <div class="project-card">
+            <div class="card-icon"><i class="fa-solid fa-map-marked-alt"></i></div>
+            <h3 class="project-title">Corredor Perimetral de Cundinamarca</h3>
+            <ul class="project-details">
+                <li><i class="detail-icon fa-solid fa-road"></i><span class="detail-text"><strong>Cierre de gestión predial:</strong> El concesionario se encuentra avanzando en las 3 etapas establecidas.</span></li>
+                <li><i class="detail-icon fa-solid fa-archive"></i><span class="detail-text"><strong>Revisión de carpetas:</strong> Actualmente la ANI ya ha iniciado labores de revisión de carpetas aprobando alrededor de 100 carpetas.</span></li>
+                <li><i class="detail-icon fa-solid fa-search"></i><span class="detail-text"><strong>Revisión Cercado y demolición:</strong> Se encuentra en revisión.</span></li>
+                <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Finalizar la gestión predial conforme a las etapas programadas y completar la revisión de todas las carpetas pendientes.</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+    </div>
+
+    <script>
+        // Animar las barras de progreso al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const progress = bar.getAttribute('data-progress');
+                setTimeout(() => {
+                    bar.style.width = progress + '%';
+                }, 300); // Pequeño retraso para que la animación sea visible
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acuerdos de Gestión - VPRE ANI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .nav-header {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.back-button {
+    background: linear-gradient(135deg, #EC6608, #d97706);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
+}
+
+.nav-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* --- COLOR DE FONDO RESTAURADO --- */
+            background: linear-gradient(135deg, 
+                #003F78 0%,
+                #575756 35%,
+                #EC6608 70%,
+                #003F78 100%
+            );
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- EFECTO DE GRADIENTE RADIAL RESTAURADO --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 63, 120, 0.3) 0%,
+                rgba(87, 87, 86, 0.4) 50%,
+                rgba(236, 102, 8, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #EC6608, #f59e0b, #EC6608);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            color: #e8eaed;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pillars-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .pillars-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .pillars-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .pillar-tab {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .pillar-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .pillar-tab.active {
+            background: #EC6608;
+            border-color: #EC6608;
+            color: white;
+        }
+        
+        .cards-grid {
+            display: grid;
+            gap: 30px;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .commitment-card {
+            background: #FBEBDD;
+            border-radius: 20px;
+            padding: 25px;
+            color: #6B4F4F;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: fadeInUp 0.8s ease both;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+        }
+
+        .commitment-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-label {
+            color: #EC6608;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            color: #3D2C2C;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .card-details {
+            flex: 1;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .detail-icon {
+            font-size: 1.1rem;
+            color: #EC6608;
+        }
+        
+        .card-footer {
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.05);
+            color: #3D2C2C;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.implemented {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.adopted {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+      
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="hero-section">
+            <h1 class="hero-title">Acuerdos de Gestión 2025</h1>
+            <p class="hero-subtitle">Compromisos Gerenciales e Indicadores de Desempeño - VPRE</p>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="pillars-header">
+                <h2 class="pillars-title">Compromisos por Pilar Estratégico</h2>
+            </div>
+
+            <div class="pillars-tabs">
+                <button class="pillar-tab active" onclick="showPillar('all')">Todos los Pilares</button>
+                <button class="pillar-tab" onclick="showPillar('productividad')">Productividad Social</button>
+                <button class="pillar-tab" onclick="showPillar('integridad')">Construcción de Integridad</button>
+                <button class="pillar-tab" onclick="showPillar('cultural')">Gestión Cultural</button>
+                <button class="pillar-tab" onclick="showPillar('desarrollo')">Desarrollo de Personas</button>
+            </div>
+
+            <div class="cards-grid" id="cardsGrid">
+                <div class="commitment-card" data-pillar="productividad">
+                    <div class="card-header">
+                        <div class="card-label">Pilar 1: Productividad Social</div>
+                        <div class="card-title">Implementar un mecanismo de articulación y seguimiento para el cumplimiento de las metas establecidas en el Plan de Acción</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-item"><i class="fas fa-bullseye detail-icon"></i><span>Objetivo: Fortalecer estructuralmente la Agencia</span></div>
+                        <div class="detail-item"><i class="fas fa-tasks detail-icon"></i><span>Indicador: Herramienta de seguimiento implementada</span></div>
+                    </div>
+                    <div class="card-footer"><span class="status-badge implemented">Estado: No Iniciado</span></div>
+                </div>
+
+                <div class="commitment-card" data-pillar="productividad">
+                    <div class="card-header">
+                        <div class="card-label">Pilar 1: Productividad Social</div>
+                        <div class="card-title">Adoptar una estrategia de articulación que permita optimizar la gestión en los aspectos prediales, sociales, ambientales y de riesgos que soportan la ejecucion de los proyectos misionales de la entidad</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-item"><i class="fas fa-bullseye detail-icon"></i><span>Objetivo: Fortalecer estructuralmente la Agencia</span></div>
+                        <div class="detail-item"><i class="fas fa-sitemap detail-icon"></i><span>Indicador: Estrategia interna adoptada</span></div>
+                    </div>
+                    <div class="card-footer"><span class="status-badge adopted">Estado: En Progreso</span></div>
+                </div>
+
+                <div class="commitment-card" data-pillar="integridad">
+                    <div class="card-header">
+                        <div class="card-label">Pilar 2: Construcción de Integridad</div>
+                        <div class="card-title">Implementar una metodología integral para la coordinación, monitoreo y verificación oportuna del cumplimiento de los compromisos</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-item"><i class="fas fa-bullseye detail-icon"></i><span>Objetivo: Fortalecer estructuralmente la Agencia</span></div>
+                        <div class="detail-item"><i class="fas fa-clipboard-check detail-icon"></i><span>Indicador: Metodología implementada</span></div>
+                    </div>
+                    <div class="card-footer"><span class="status-badge implemented">Estado: En Progreso</span></div>
+                </div>
+
+                <div class="commitment-card" data-pillar="cultural">
+                    <div class="card-header">
+                        <div class="card-label">Pilar 3: Gestión Cultural</div>
+                        <div class="card-title">Generar espacios de encuentro con los integrantes de los equipos de trabajo y los líderes en donde se fortalezca la comunicación, articulación y las relaciones interpersonales</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-item"><i class="fas fa-bullseye detail-icon"></i><span>Objetivo: Fortalecer estructuralmente la Agencia</span></div>
+                        <div class="detail-item"><i class="fas fa-users detail-icon"></i><span>Indicador: Comités o instancias de relacionamiento implementadas</span></div>
+                    </div>
+                    <div class="card-footer"><span class="status-badge implemented">Estado: No Implementado</span></div>
+                </div>
+
+                <div class="commitment-card" data-pillar="desarrollo">
+                    <div class="card-header">
+                        <div class="card-label">Pilar 4: Desarrollo de Personas</div>
+                        <div class="card-title">Impulsar estrategias enmarcadas en los planes institucionales que permitan el desarrollo de competencias de los colaboradores para lograr el cumplimiento de los objetivos</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="detail-item"><i class="fas fa-bullseye detail-icon"></i><span>Objetivo: Fortalecer estructuralmente la Agencia</span></div>
+                        <div class="detail-item"><i class="fas fa-lightbulb detail-icon"></i><span>Indicador: Estrategias implementadas</span></div>
+                    </div>
+                    <div class="card-footer"><span class="status-badge implemented">Estado: No Implementado</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<nav class="nav-header">
+    <button class="back-button" onclick="goBack()">
+        ← Volver al Tablero Principal
+    </button>
+    <div class="nav-title">Acuerdos de Gestión</div>
+    <div style="width: 180px;"></div>
+</nav>
+
+    <script>
+        function showPillar(pillar) {
+            document.querySelectorAll('.pillar-tab').forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.querySelectorAll('.commitment-card').forEach(card => {
+                if (pillar === 'all' || card.dataset.pillar === pillar) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        function goBack() {
+    console.log('🔙 Regresando al tablero principal...');
+    
+    // Mostrar mensaje de transición
+    const transitionMessage = document.createElement('div');
+    transitionMessage.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #003F78, #EC6608);
+        color: white;
+        padding: 25px 40px;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        z-index: 10000;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    `;
+    transitionMessage.innerHTML = `
+        <div style="font-size: 2rem; margin-bottom: 10px;">🏠</div>
+        <div>Regresando al Tablero Principal...</div>
+    `;
+    
+    document.body.appendChild(transitionMessage);
+    
+    // Navegar después de un breve delay
+    setTimeout(() => {
+        try {
+            window.location.href = 'index.html';
+        } catch (error) {
+            console.error('Error al navegar:', error);
+            if (transitionMessage.parentNode) {
+                transitionMessage.parentNode.removeChild(transitionMessage);
+            }
+            alert('❌ Error al regresar al tablero principal.\n\nVerifique que el archivo index.html existe en la misma carpeta.');
+        }
+    }, 1200);
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retos Estratégicos 2026 - VPRE ANI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, 
+                #003F78 0%,
+                #575756 35%,
+                #EC6608 70%,
+                #003F78 100%
+            );
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 63, 120, 0.3) 0%,
+                rgba(87, 87, 86, 0.4) 50%,
+                rgba(236, 102, 8, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        .nav-header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #EC6608, #d97706);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
+        }
+
+        .nav-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-select {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-select option {
+            background: #333;
+            color: white;
+        }
+
+        .main-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #EC6608, #f59e0b, #EC6608);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            color: #e8eaed;
+            font-size: 1.3rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Dashboard Ejecutivo */
+        .executive-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* Panel de Métricas */
+        .metrics-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            animation: fadeInLeft 0.8s ease;
+        }
+
+        .metrics-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .metric-item:hover {
+            background: #f9fafb;
+            margin: 0 -10px;
+            padding: 15px 10px;
+            border-radius: 10px;
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        .metric-badge {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .badge-alto { background: #dc2626; }
+        .badge-medio { background: #f59e0b; }
+        .badge-gits { background: #10b981; }
+        .badge-riesgo { background: #eab308; }
+
+        /* Mapa de Calor Interactivo - COLORES INSTITUCIONALES ACTUALIZADOS */
+        .heatmap-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* COLORES INSTITUCIONALES SERIOS */
+        .heatmap-cell.critical {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            color: white;
+            border-color: #450a0a;
+        }
+        .heatmap-cell.high {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            color: white;
+            border-color: #78350f;
+        }
+        .heatmap-cell.medium {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            color: white;
+            border-color: #1e40af;
+        }
+        .heatmap-cell.low {
+            background: linear-gradient(135deg, #065f46, #047857);
+            color: white;
+            border-color: #064e3b;
+        }
+        .heatmap-cell.none {
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
+            color: white;
+            border-color: #4b5563;
+        }
+
+        .cell-git {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .cell-count {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+        .cell-label {
+            font-size: 0.7rem;
+            margin-top: 2px;
+            opacity: 0.9;
+        }
+
+        /* Panel de Prioridades */
+        .priority-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            animation: fadeInRight 0.8s ease;
+        }
+
+        .priority-list { list-style: none; }
+
+        .priority-item {
+            background: linear-gradient(135deg, #fff, #f9fafb);
+            border-left: 4px solid #EC6608;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .priority-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .priority-item.critical { border-left-color: #dc2626; }
+
+        .priority-text {
+            font-size: 0.9rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* GRÁFICO DE BARRAS - TAMAÑO REDUCIDO */
+        .progress-chart {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px; /* Reducido de 30px a 20px */
+            margin-bottom: 30px; /* Reducido de 40px a 30px */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px; /* Reducido de 25px a 15px */
+        }
+        .chart-title {
+            font-size: 1.3rem; /* Reducido de 1.5rem a 1.3rem */
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .chart-legend {
+            display: flex;
+            gap: 15px; /* Reducido de 20px a 15px */
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px; /* Reducido de 8px a 6px */
+            font-size: 0.85rem; /* Reducido de 0.9rem a 0.85rem */
+            color: #6b7280;
+        }
+        .legend-color {
+            width: 12px; /* Reducido de 15px a 12px */
+            height: 12px; /* Reducido de 15px a 12px */
+            border-radius: 3px; /* Reducido de 4px a 3px */
+        }
+        .progress-bars {
+            display: grid;
+            gap: 12px; /* Reducido de 20px a 12px */
+        }
+        .progress-bar-item {
+            display: grid;
+            grid-template-columns: 130px 1fr 45px; /* Reducido de 150px 1fr 50px */
+            align-items: center;
+            gap: 12px; /* Reducido de 15px a 12px */
+        }
+        .bar-label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem; /* Reducido de 0.95rem a 0.9rem */
+            text-align: right;
+        }
+        .bar-container {
+            height: 28px; /* Reducido de 35px a 28px */
+            background: #e9ecef;
+            border-radius: 6px; /* Reducido de 8px a 6px */
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+        .bar-fill {
+            height: 100%;
+            transition: width 1s ease;
+        }
+        .bar-fill-alto { background-color: #dc2626; }
+        .bar-fill-medio { background-color: #f59e0b; }
+        
+        .bar-inner-label {
+            position: absolute;
+            left: 10px; /* Reducido de 12px a 10px */
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 0.8rem; /* Reducido de 0.9rem a 0.8rem */
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            pointer-events: none;
+        }
+        .bar-total-count {
+            font-weight: 700;
+            color: #374151;
+            font-size: 1rem; /* Reducido de 1.1rem a 1rem */
+            text-align: center;
+        }
+
+        /* Tarjetas de Retos */
+        .challenges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .challenge-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: fadeInUp 0.8s ease both;
+            position: relative;
+            display: none; /* Hidden by default, shown by JS */
+        }
+
+        .challenge-card.visible {
+            display: block;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .challenge-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #003F78, #005aab);
+            color: white;
+            position: relative;
+        }
+
+        .challenge-git {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .challenge-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .challenge-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        .challenge-badge.alto {
+             background: #dc2626;
+             color: white;
+        }
+         .challenge-badge.medio {
+             background: #f59e0b;
+             color: white;
+        }
+
+        .challenge-body { padding: 20px; }
+        .challenge-section { margin-bottom: 20px; }
+        .section-label {
+            font-size: 0.8rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .section-content {
+            color: #374151;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Modal de Detalles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        .modal-header {
+            padding: 30px;
+            background: linear-gradient(135deg, #003F78, #005aab);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .modal-title-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .modal-body { padding: 30px; }
+        .modal-section { margin-bottom: 30px; }
+        .modal-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #EC6608;
+            padding-bottom: 8px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        .modal-body ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+        .modal-body li {
+            padding: 8px 0 8px 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+        .modal-body li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #EC6608;
+            font-weight: bold;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Media Queries */
+        @media (max-width: 1200px) {
+            .executive-dashboard { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .challenges-container { grid-template-columns: 1fr; }
+            .heatmap-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-title { display: none; }
+            .progress-bar-item { grid-template-columns: 90px 1fr 35px; gap: 8px; }
+            .bar-label { text-align: left; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-header">
+        <button class="back-button" onclick="goBack()">
+            ← Volver al Tablero Principal
+        </button>
+        <div class="nav-title">Retos Estratégicos 2026</div>
+        <div class="filter-controls">
+            <select class="filter-select" id="impactFilter">
+                <option value="all">Todos los Impactos</option>
+                <option value="alto">Alto Impacto</option>
+                <option value="medio">Medio Impacto</option>
+            </select>
+            <select class="filter-select" id="gitFilter">
+                <option value="all">Todos los GITs</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="hero-section">
+            <h1 class="hero-title">RETOS ESTRATÉGICOS 2026</h1>
+            <p class="hero-subtitle">Dashboard Ejecutivo de Desafíos y Propuestas de Abordaje</p>
+        </div>
+
+        <div class="executive-dashboard">
+            <div class="metrics-panel" id="metrics-panel"></div>
+            <div class="heatmap-panel" id="heatmap-panel"></div>
+            <div class="priority-panel" id="priority-panel"></div>
+        </div>
+
+        <div class="progress-chart" id="progress-chart"></div>
+
+        <div class="challenges-container" id="challenges-container"></div>
+    </div>
+
+    <div class="modal" id="challenge-modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+                <h2 class="modal-title-text" id="modal-title"></h2>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+<script>
+// ===================================================================================
+// DATA SOURCE
+// ===================================================================================
+const challengesData = [
+    // --- GIT SOCIAL (2) ---
+    {id: 1, git: 'Social', title: 'Consolidación de un equipo en el GIT Social para el desarrollo de las consultas previas.', impact: 'alto', status: 'en-riesgo', progress: 20, proposal: '<ul><li>Conformar un equipo interdisciplinario con experiencia en derecho étnico, antropología y gestión social.</li><li>Diseñar un plan de formación interna sobre normativas y buenas prácticas en consulta previa.</li><li>Establecer una hoja de ruta metodológica institucional para el acompañamiento de los procesos.</li><li>Coordinar con el Ministerio del Interior y otras entidades competentes para garantizar articulación y cumplimiento normativo.</li></ul>', impact_detail: 'Sin este equipo, la Agencia enfrenta: Retrasos en cronogramas de obra, Riesgos legales y sociales por incumplimientos normativos, y Pérdida de legitimidad frente a las comunidades étnicas.'},
+    {id: 2, git: 'Social', title: 'Consolidación de un equipo en el GIT Social para la atención a la conflictividad social.', impact: 'alto', status: 'en-progreso', progress: 40, proposal: '<ul><li>Estructurar un equipo de apoyo para la gestión de conflictividad social dentro de la Agencia.</li><li>Vincular profesionales con experiencia en mediación, negociación y análisis de conflictos territoriales.</li><li>Implementar protocolos de atención temprana y seguimiento de alertas sociales.</li><li>Fortalecer la articulación con actores locales, autoridades y líderes comunitarios para la prevención y resolución de conflictos.</li></ul>', impact_detail: 'La ausencia de un equipo especializado impide abordar de manera asertiva y oportuna las conflictividades en los territorios, lo que genera impactos negativos en la imagen institucional y debilita la relación con las comunidades.'},
+    
+    // --- GIT AMBIENTAL (3) ---
+    {id: 3, git: 'Ambiental', title: 'Fortalecer e implementar los instrumentos de la gestión del GIT Ambiental.', impact: 'alto', status: 'en-riesgo', progress: 15, proposal: '<ul><li>Implementar la Estrategia de Sostenibilidad</li><li>Implementar el Plan de Gestión de Riesgos de la Entidad (Obligación incumplida desde el 2012)</li><li>Ampliación del alcance de BIO ANI.</li></ul>', impact_detail: 'El no fortalecimiento de la gestión ambiental expone a la entidad a sanciones, retrasos y sobrecostos en los proyectos.'},
+    {id: 4, git: 'Ambiental', title: 'Fortalecer la defensa jurídica para el componente ambiental.', impact: 'alto', status: 'en-progreso', progress: 30, proposal: '<ul><li>Gestión interinstitucional para articular una defensa unificada del estado en materia ambiental.</li><li>Ajuste de los procedimientos internos para incorporar mecanismos prospectivos de cambio climático.</li></ul>', impact_detail: 'Una defensa jurídica débil puede resultar en fallos adversos, multas y paralización de proyectos por temas ambientales.'},
+    {id: 5, git: 'Ambiental', title: 'Saneamiento de expedientes ambientales en titularidad de la ANI.', impact: 'alto', status: 'no-iniciado', progress: 5, proposal: '<ul><li>Desarrollar una estrategia para gestión de pendientes ambientales y eventuales pasivos ambientales.</li></ul>', impact_detail: 'La falta de saneamiento puede derivar en pasivos ambientales no identificados, con altos costos financieros y reputacionales a futuro.'},
+
+    // --- GIT PREDIAL (4) ---
+    {id: 6, git: 'Predial', title: 'Garantizar el 90% de la longitud efectiva predial requerida para la ejecución de los proyectos de infraestructura 4G.', impact: 'alto', status: 'en-progreso', progress: 75, proposal: '<p>Seguimiento del GIT Predial y monitoreo coordinado con las interventorías de los proyectos frente a la gestión de permisos de intervención voluntaria y/o adquisición de predios requeridos para la ejecución de proyectos, de tal forma de garantizar la armonía con plan de obras del proyecto.</p>', impact_detail: 'Armonía con plan de obras del proyecto y ejecución oportuna de estas.'},
+    {id: 7, git: 'Predial', title: 'Adquirir el 80% de los predios que fueron requeridos para la ejecución de los proyectos de infraestructura 4G. Y el 10% de los predios para 5G.', impact: 'alto', status: 'completado', progress: 100, proposal: '<p>Seguimiento del GIT Predial y monitoreo coordinado con las interventorías de los proyectos frente a la culminación de los procesos de gestión predial bien sea mediante mecanismo de enajenación voluntaria y/o expropiación judicial.</p>', impact_detail: 'Cumplimiento de las disposiciones contractuales relacionadas con la gestión y adquisición predial bajo la titularidad de la ANI.'},
+    {id: 8, git: 'Predial', title: 'Garantizar el 40% de la longitud efectiva predial requerida para el inicio de la etapa de construcción de los proyectos de infraestructura 5G.', impact: 'alto', status: 'en-progreso', progress: 50, proposal: '<p>Seguimiento del GIT Predial y monitoreo coordinado con las interventorías de los proyectos frente a la gestión de permisos de intervención voluntaria y/o adquisición de predios requeridos para el inicio de la fase de construcción de las Unidades Funcionales de los Proyectos.</p>', impact_detail: 'Cumplimiento del requisito contractual para suscribir acta de inicio de la fase de construcción de las UF.'},
+    {id: 9, git: 'Predial', title: 'Obtener como mínimo la adjudicación y titularidad a favor de la Agencia del 20% de predios de naturaleza baldía.', impact: 'alto', status: 'en-riesgo', progress: 10, proposal: '<p>Seguimiento, monitoreo y gestión interinstitucional entre el GIT Predial de la ANI y de la Agencia Nacional de Tierras con el fin de dar celeridad a la resolución de trámites de adjudicación de predios baldíos actualmente en curso.</p>', impact_detail: 'Demora en el trámite de adjudicación de predios baldíos a la entidad de derecho público (ANI). Incidencia en el procedimiento contractual de verificación predial.'},
+
+    // --- GIT JURÍDICA PREDIAL (6) ---
+    {id: 10, git: 'Jurídica Predial', title: 'Cerrar integralmente la gestión predial de la Concesión Armenia–Pereira–Manizales antes de la reversión (1er Trim del 2027).', impact: 'medio', status: 'en-progreso', progress: 60, proposal: '<ul><li>Plan de trabajo detallado con todas las actividades de verificación a cargo de la interventoría.</li><li>Informes mensuales de avance que muestren resultados concretos de cada actividad.</li><li>Generación oportuna de requerimientos al concesionario cuando haya lugar a ello.</li></ul>', impact_detail: 'La ejecución oportuna de esta actividad es importante para determinar el estado de cumplimiento del concesionario y con base en ello hacer los requerimientos a que haya lugar previo a la reversión del contrato.'},
+    {id: 11, git: 'Jurídica Predial', title: 'Completar integralmente la gestión predial del Proyecto "Desarrollo vial del oriente de Medellín" antes de la reversión (31 de julio de 2026).', impact: 'medio', status: 'en-progreso', progress: 55, proposal: '<ul><li>Plan de trabajo detallado con todas las actividades de verificación a cargo de la interventoría.</li><li>Informes mensuales de avance que muestren resultados concretos de cada actividad.</li><li>Generación oportuna de requerimientos al concesionario cuando haya lugar a ello.</li></ul>', impact_detail: 'El incumplimiento en la gestión de los predios pendientes puede afectar el cierre del contrato, las obras y generar controversias, por lo que es clave verificar el cumplimiento del concesionario antes de la reversión.'},
+    {id: 12, git: 'Jurídica Predial', title: 'Malla Vial Valle del Cauca y Cauca: Terminación del proceso de expropiación con radicado No. 2006-00068 (Predio Parador de Buga).', impact: 'alto', status: 'en-riesgo', progress: 25, proposal: '<ul><li>Impulsar el trámite judicial hasta alcanzar, como mínimo, segunda instancia durante 2026.</li><li>Presentar argumentos jurídicos y técnicos contra cualquier tasación de indemnización desfavorable.</li><li>Ejercer todas las herramientas procesales necesarias.</li><li>Seguimiento proactivo de cada actuación judicial.</li></ul>', impact_detail: 'La prolongación de un proceso judicial que ya lleva más de 19 años pone en riesgo la culminación de la expropiación y expone a la ANI a un pasivo de indemnización de COP 16.340.486.643.'},
+    {id: 13, git: 'Jurídica Predial', title: 'Liquidación del proyecto Perimetral de Oriente: Obtener cierre de la gestión predial.', impact: 'alto', status: 'no-iniciado', progress: 10, proposal: '<p>Seguimiento del cumplimiento de las etapas establecidas mitigando el riesgo de pasivos prediales.</p>', impact_detail: 'La falta de cierre de la gestión predial puede generar pasivos y contingencias para la entidad.'},
+    {id: 14, git: 'Jurídica Predial', title: 'Concluir el proceso de expropiación contra José Antenor González (Proyecto BGG).', impact: 'alto', status: 'en-progreso', progress: 50, proposal: '<ul><li>Agotar los mecanismos procesales para garantizar que la diligencia de entrega se realice sin dilaciones.</li><li>Apoyarse en los poderes de ordenación e instrucciones de los Jueces.</li><li>Monitoreo continuo del proceso.</li></ul>', impact_detail: 'La presentación de oposiciones podría impedir la transferencia del predio, paralizando la ampliación del tercer carril Bogotá–Girardot.'},
+    {id: 15, git: 'Jurídica Predial', title: 'Culminar cerca de 105 procesos de expropiación a cargo de la ANI.', impact: 'medio', status: 'en-riesgo', progress: 30, proposal: '<ul><li>Impulsar con agilidad cada proceso de expropiación.</li><li>Monitoreo centralizado del avance de los 105 casos.</li><li>Escalamiento inmediato de obstáculos.</li></ul>', impact_detail: 'La falta de titulación de estas áreas compromete la ejecución de fases clave en los proyectos, generando retrasos y sobrecostos.'},
+
+    // --- GIT RIESGOS (2) ---
+    {id: 16, git: 'Riesgos', title: 'Implementar los mecanismos no líquidos de compensación de riesgos para proyectos de iniciativa privada.', impact: 'alto', status: 'no-iniciado', progress: 10, proposal: '<p>Formalizar la metodología para la aplicación de los mecanismos de compensación de riesgos no líquidos.</p>', impact_detail: 'Esencial para garantizar la continuidad y viabilidad financiera de los proyectos de iniciativa privada.'},
+    {id: 17, git: 'Riesgos', title: 'Formalizar jurídicamente la metodología de tarifas diferenciales en peajes.', impact: 'medio', status: 'en-progreso', progress: 45, proposal: '<p>Motivar la expedición de la metodología de tarifas diferenciales para los proyectos carreteros de la ANI por parte del Ministerio de Transporte.</p>', impact_detail: 'Sirve como herramienta de diálogo en mesas de trabajo con las comunidades para mitigar conflictos sociales.'},
+
+    // --- GIT PLANEACIÓN (4) ---
+    {id: 18, git: 'Planeación', title: 'Coordinación y acompañamiento en el trámite presupuestal de vigencias futuras de la Estrategia Férrea.', impact: 'alto', status: 'en-progreso', progress: 70, proposal: '<ul><li>Coordinación con las vicepresidencias de estructuración y la VGCON.', impact_detail: 'Garantizar el cumplimiento de los tramites presupuestales a través de vigencias futuras que permitan la ejecución de los proyectos de la estrategia férrea.'},
+    {id: 19, git: 'Planeación', title: 'Gestión de recursos adicionales de inversión (carta de modificación ) para cubrir la necesidades desfinanciadas según PL –PGN 2026.', impact: 'alto', status: 'en-progreso', progress: 60, proposal: '<ul><li>Identificación de los recursos desfinanciados que se relacionaron en el Anteproyecto de presupuesto 2026.</li></ul>', impact_detail: 'Pago del déficit de las vigencias futuras APP por $1.5 billones, obras complementarias desfinanciadas y que están relacionadas con fallos judiciales.'},
+    {id: 20, git: 'Planeación', title: 'Programación del presupuesto de inversión 2026 por concepto y por vicepresidencias.', impact: 'alto', status: 'en-progreso', progress: 50, proposal: '<p>Propuesta de distribución de recursos de inversión para cada una de las vicepresidencias, para aprobación por parte del presidente de la ANI.</p>', impact_detail: 'Contar con los recursos de inversión para el cumplimiento de las metas institucionales en cada una de las áreas .'},
+    {id: 21, git: 'Planeación', title: 'Jornada de Planeación Estratégica 2026 con la alta dirección.', impact: 'alto', status: 'en-progreso', progress: 35, proposal: '<ul><li>Reunión para la definición de la metodología de planeación, posteriormente reunión con Presidencia para definir la fecha de realización de la jornada.</li></ul>', impact_detail: 'Garantizar el cumplimiento de las metas establecidas en el PND y alinear las áreas de la Agencia con el fin de alcanzar un cierre de gobierno adecuado.'},
+    {id: 22, git: 'Planeación', title: 'Gestión del Conocimiento: Documentar las experiencias exitosas con las que se exponga el sello técnico de la ANI donde se evidencie que somos una entidad única y especializada en temas de infraestructura.', impact: 'alto', status: 'en-progreso', progress: 35, proposal: '<ul><li>Conformar un equipo compuesto por enlaces de las diferentes áreas quienes se encargarán de la recopilación de la información y desarrollo de la propuesta según el área.</li></ul>', impact_detail: 'Publicación de las experiencias exitosas como memoria institucional con número ISBN.'},
+
+    // --- GIT TIC (3) ---
+    {id: 23, git: 'TIC', title: 'Financiar con Vigencias futuras los proyectos que trascienden el año fiscal actual.', impact: 'medio', status: 'en-progreso', progress: 50, proposal: '<p>Planificar y presentar con anticipación los requerimientos de vigencias futuras para el GIT.</p>', impact_detail: 'Evitar la Interrupción de proyectos clave y la afectación de la continuidad operativa.'},
+    {id: 24, git: 'TIC', title: 'Implementar un plan sectorial para la gestión unificada y estandarizada de los datos maestros.', impact: 'alto', status: 'en-riesgo', progress: 15, proposal: '<p>Definir un marco de gobernanza de datos maestros, identificar datos críticos, y establecer estándares de calidad.</p>', impact_detail: 'Inconsistencia en la información, duplicidad de datos, y limitaciones en la interoperabilidad con otras entidades.'},
+    {id: 25, git: 'TIC', title: 'Potenciar el equipo del GIT TIC.', impact: 'alto', status: 'en-riesgo', progress: 20, proposal: '<p>Apoyar los requerimientos de vigencias futuras para asegurar la contratación del personal necesario.</p>', impact_detail: 'Retrasos en proyectos críticos, sobrecarga laboral, disminución de la calidad de los servicios de TI.'},
+
+    // --- GIT VALORIZACIÓN (1) ---
+    {id: 26, git: 'Valorización', title: 'Analizar y verificar los recursos propios y del FIP para el presupuesto de la vigencia 2026.', impact: 'alto', status: 'en-progreso', progress: 80, proposal: '<p>Para asegurar la continuidad operativa y el correcto despliegue de la Contribución Nacional de Valorización, es prioritario gestionar y asignar los recursos requeridos a nivel humano, tecnológico, físico e institucional.</p>', impact_detail: 'Asegurar el sostenimiento y continuidad del proceso de la Contribución Nacional de Valorización (CNV).'}
+];
+
+
+// ===================================================================================
+// LÓGICA DEL DASHBOARD
+// ===================================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- ELEMENTOS DEL DOM ---
+    const impactFilterEl = document.getElementById('impactFilter');
+    const gitFilterEl = document.getElementById('gitFilter');
+    const challengesContainer = document.getElementById('challenges-container');
+    const modal = document.getElementById('challenge-modal');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    // --- INICIALIZACIÓN ---
+    function init() {
+        populateGitFilter();
+        renderAllComponents();
+        setupEventListeners();
+    }
+
+    // --- LÓGICA DE RENDERIZADO DE COMPONENTES ---
+
+    function renderAllComponents() {
+        renderMetrics();
+        renderHeatmap();
+        renderPriorityList();
+        renderProgressChart();
+        renderChallenges();
+    }
+    
+    function populateGitFilter() {
+        const gits = [...new Set(challengesData.map(c => c.git))];
+        gits.sort();
+        gits.forEach(git => {
+            const option = document.createElement('option');
+            option.value = git;
+            option.textContent = `GIT ${git}`;
+            gitFilterEl.appendChild(option);
+        });
+    }
+
+    function renderMetrics() {
+        const totalRetos = challengesData.length;
+        const altoImpacto = challengesData.filter(c => c.impact === 'alto').length;
+        const medioImpacto = challengesData.filter(c => c.impact === 'medio').length;
+        const gitsActivos = [...new Set(challengesData.map(c => c.git))].length;
+        const enRiesgo = challengesData.filter(c => c.status === 'en-riesgo').length;
+
+        const html = `
+            <h3 class="metrics-title"><span>📊</span> Métricas Clave</h3>
+            <div class="metric-item" onclick="applyFilters({ impact: 'all', git: 'all' })">
+                <div class="metric-label"><span class="metric-badge" style="background: #003F78;"></span>Total Retos</div>
+                <div class="metric-value">${totalRetos}</div>
+            </div>
+            <div class="metric-item" onclick="applyFilters({ impact: 'alto' })">
+                <div class="metric-label"><span class="metric-badge badge-alto"></span>Alto Impacto</div>
+                <div class="metric-value">${altoImpacto}</div>
+            </div>
+            <div class="metric-item" onclick="applyFilters({ impact: 'medio' })">
+                <div class="metric-label"><span class="metric-badge badge-medio"></span>Medio Impacto</div>
+                <div class="metric-value">${medioImpacto}</div>
+            </div>
+            <div class="metric-item" onclick="applyFilters({ status: 'en-riesgo' })">
+                <div class="metric-label"><span class="metric-badge badge-riesgo"></span>En Riesgo</div>
+                <div class="metric-value">${enRiesgo}</div>
+            </div>
+             <div class="metric-item">
+                <div class="metric-label"><span class="metric-badge badge-gits"></span>GITs Activos</div>
+                <div class="metric-value">${gitsActivos}</div>
+            </div>
+        `;
+        document.getElementById('metrics-panel').innerHTML = html;
+    }
+
+    function renderHeatmap() {
+        const gits = [...new Set(challengesData.map(c => c.git))];
+        let gridHtml = '';
+        gits.forEach(git => {
+            const gitChallenges = challengesData.filter(c => c.git === git);
+            const altoCount = gitChallenges.filter(c => c.impact === 'alto').length;
+            const enRiesgoCount = gitChallenges.filter(c => c.status === 'en-riesgo').length;
+
+            let cellClass = 'low';
+            if (enRiesgoCount > 0) cellClass = 'high';
+            if (enRiesgoCount >= 2 || altoCount >= 3) cellClass = 'critical';
+            if (gitChallenges.length === 0) cellClass = 'none';
+            else if (altoCount === 0 && enRiesgoCount === 0) cellClass = 'medium';
+
+            gridHtml += `
+                <div class="heatmap-cell ${cellClass}" onclick="applyFilters({ git: '${git}' })">
+                    <div class="cell-git">${git}</div>
+                    <div class="cell-count">${gitChallenges.length}</div>
+                    <div class="cell-label">Alto: ${altoCount} / Riesgo: ${enRiesgoCount}</div>
+                </div>
+            `;
+        });
+
+        const html = `
+            <h3 class="metrics-title"><span>🔥</span> Mapa de Calor por GIT</h3>
+            <div class="heatmap-grid">${gridHtml}</div>`;
+        document.getElementById('heatmap-panel').innerHTML = html;
+    }
+
+    function renderPriorityList() {
+        const priorityChallenges = challengesData
+            .filter(c => c.status === 'en-riesgo' || c.impact === 'alto')
+            .sort((a, b) => {
+                if (a.status === 'en-riesgo' && b.status !== 'en-riesgo') return -1;
+                if (b.status === 'en-riesgo' && a.status !== 'en-riesgo') return 1;
+                return 0;
+            })
+            .slice(0, 5);
+
+        let listHtml = '';
+        priorityChallenges.forEach(c => {
+            listHtml += `
+                <li class="priority-item ${c.status === 'en-riesgo' ? 'critical' : ''}" onclick="showModal(${c.id})">
+                    <span class="priority-text">${c.title}</span>
+                </li>`;
+        });
+        
+        const html = `
+            <h3 class="metrics-title"><span>🎯</span> Top 5 Prioridades</h3>
+            <ul class="priority-list">${listHtml}</ul>`;
+        document.getElementById('priority-panel').innerHTML = html;
+    }
+    
+    // --- FUNCIÓN ACTUALIZADA DEL GRÁFICO ---
+    function renderProgressChart() {
+        const gitCounts = {};
+        challengesData.forEach(c => {
+            if (!gitCounts[c.git]) {
+                gitCounts[c.git] = { total: 0, alto: 0, medio: 0 };
+            }
+            gitCounts[c.git].total++;
+            if (c.impact === 'alto') gitCounts[c.git].alto++;
+            if (c.impact === 'medio') gitCounts[c.git].medio++;
+        });
+
+        const sortedGits = Object.keys(gitCounts).sort((a, b) => gitCounts[b].total - gitCounts[a].total);
+
+        let barsHtml = '';
+        sortedGits.forEach(git => {
+            const counts = gitCounts[git];
+            const altoWidth = (counts.alto / counts.total) * 100;
+            const medioWidth = (counts.medio / counts.total) * 100;
+            const totalWidth = altoWidth + medioWidth;
+            const label = `${counts.total} reto${counts.total > 1 ? 's' : ''}`;
+
+            barsHtml += `
+                <div class="progress-bar-item">
+                    <div class="bar-label">${git}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill bar-fill-alto" style="width: ${altoWidth}%"></div>
+                        <div class="bar-fill bar-fill-medio" style="width: ${medioWidth}%"></div>
+                        <div class="bar-inner-label" style="width: ${totalWidth}%">${label}</div>
+                    </div>
+                    <div class="bar-total-count">${counts.total}</div>
+                </div>`;
+        });
+
+        const html = `
+            <div class="chart-header">
+                <h3 class="chart-title">Distribución de Retos por GIT</h3>
+                <div class="chart-legend">
+                    <div class="legend-item"><div class="legend-color" style="background: #dc2626;"></div><span>Alto Impacto</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div><span>Medio Impacto</span></div>
+                </div>
+            </div>
+            <div class="progress-bars">${barsHtml}</div>`;
+        document.getElementById('progress-chart').innerHTML = html;
+    }
+
+    function renderChallenges() {
+        const impactFilter = impactFilterEl.value;
+        const gitFilter = gitFilterEl.value;
+
+        challengesContainer.innerHTML = ''; // Limpiar contenedor
+        challengesData.forEach(c => {
+            const impactMatch = impactFilter === 'all' || c.impact === impactFilter;
+            const gitMatch = gitFilter === 'all' || c.git === gitFilter;
+            
+            const card = document.createElement('div');
+            card.className = `challenge-card ${impactMatch && gitMatch ? 'visible' : ''}`;
+            card.dataset.challengeId = c.id;
+            
+            card.innerHTML = `
+                <div class="challenge-header">
+                    <div class="challenge-info">
+                        <div class="challenge-git">GIT ${c.git}</div>
+                        <div class="challenge-title">${c.title}</div>
+                    </div>
+                    <span class="challenge-badge ${c.impact}">${c.impact}</span>
+                </div>
+                <div class="challenge-body">
+                    <div class="challenge-section">
+                        <div class="section-label">Impacto Potencial</div>
+                        <div class="section-content">${c.impact_detail}</div>
+                    </div>
+                </div>
+            `;
+            challengesContainer.appendChild(card);
+        });
+        addCardEventListeners();
+    }
+
+
+    // --- LÓGICA DE EVENTOS E INTERACTIVIDAD ---
+    
+    function setupEventListeners() {
+        impactFilterEl.addEventListener('change', renderChallenges);
+        gitFilterEl.addEventListener('change', renderChallenges);
+        modalCloseBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
+
+    function addCardEventListeners() {
+        document.querySelectorAll('.challenge-card').forEach(card => {
+            card.addEventListener('click', () => {
+                showModal(card.dataset.challengeId);
+            });
+        });
+    }
+
+    window.applyFilters = function(filters) {
+        if (filters.impact) {
+            impactFilterEl.value = filters.impact;
+        } else {
+            impactFilterEl.value = 'all';
+        }
+        if (filters.git) {
+            gitFilterEl.value = filters.git;
+        } else {
+            gitFilterEl.value = 'all';
+        }
+        renderChallenges();
+        window.scrollTo({ top: document.getElementById('challenges-container').offsetTop - 80, behavior: 'smooth' });
+    }
+
+    window.showModal = function(id) {
+        const challenge = challengesData.find(c => c.id == id);
+        if (!challenge) return;
+
+        document.getElementById('modal-title').textContent = challenge.title;
+        document.getElementById('modal-body').innerHTML = `
+            <div class="modal-section">
+                <h4 class="modal-section-title"><i class="fa-solid fa-users-gear"></i> GIT Responsable</h4>
+                <p>GIT ${challenge.git}</p>
+            </div>
+            <div class="modal-section">
+                <h4 class="modal-section-title"><i class="fa-solid fa-triangle-exclamation"></i> Impacto Potencial</h4>
+                <p>${challenge.impact_detail}</p>
+            </div>
+            <div class="modal-section">
+                <h4 class="modal-section-title"><i class="fa-solid fa-lightbulb"></i> Propuesta de Abordaje</h4>
+                ${challenge.proposal}
+            </div>
+             <div class="modal-section">
+                <h4 class="modal-section-title"><i class="fa-solid fa-chart-line"></i> Estado Actual</h4>
+                <p><b>Progreso:</b> ${challenge.progress}%</p>
+                <p><b>Estatus:</b> <span style="text-transform:capitalize;">${challenge.status.replace('-', ' ')}</span></p>
+            </div>
+        `;
+        modal.classList.add('active');
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+    }
+
+    // ===================================================================================
+    // FUNCIÓN DE NAVEGACIÓN ACTUALIZADA - CONECTADA AL TABLERO PRINCIPAL
+    // ===================================================================================
+    window.goBack = function() {
+        console.log('🔙 Regresando al tablero principal...');
+        
+        // Mostrar mensaje de transición
+        const transitionMessage = document.createElement('div');
+        transitionMessage.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #003F78, #EC6608);
+            color: white;
+            padding: 25px 40px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            z-index: 10000;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        `;
+        transitionMessage.innerHTML = `
+            <div style="font-size: 2rem; margin-bottom: 10px;">🏠</div>
+            <div>Regresando al Tablero Principal...</div>
+        `;
+        
+        document.body.appendChild(transitionMessage);
+        
+        // Navegar después de un breve delay
+        setTimeout(() => {
+            try {
+                // Intentar navegar al tablero principal
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Error al navegar:', error);
+                // Remover mensaje de transición si hay error
+                if (transitionMessage.parentNode) {
+                    transitionMessage.parentNode.removeChild(transitionMessage);
+                }
+                // Mostrar mensaje de error
+                alert('❌ Error al regresar al tablero principal.\n\nVerifique que el archivo index.html existe en la misma carpeta.');
+            }
+        }, 1200);
+    }
+
+    // --- INICIALIZAR EL DASHBOARD ---
+    init();
+});
+</script>
+</body>
+</html>

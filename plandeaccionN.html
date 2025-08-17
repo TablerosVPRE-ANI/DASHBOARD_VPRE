@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Acción 2025 - VPRE ANI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, 
+                #003F78 0%,
+                #575756 35%,
+                #EC6608 70%,
+                #003F78 100%
+            );
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 63, 120, 0.3) 0%,
+                rgba(87, 87, 86, 0.4) 50%,
+                rgba(236, 102, 8, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+
+        .nav-header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #EC6608, #d97706);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
+        }
+
+        .nav-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #EC6608, #f59e0b, #EC6608);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            color: #e8eaed;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .focus-group {
+            margin-bottom: 50px;
+        }
+        
+        .focus-group-title {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(5px);
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+            font-weight: 400;
+            line-height: 1.5;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInDown 0.6s ease;
+        }
+        
+        .focus-number {
+            font-weight: 700;
+            color: #f59e0b;
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background-color: #FBEBDD;
+            border-radius: 20px;
+            padding: 25px;
+            color: #6B4F4F;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: #3D2C2C;
+        }
+
+        .project-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: #3D2C2C;
+            flex-grow: 1;
+        }
+
+        .project-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .project-details li {
+            display: flex;
+            align-items: center; /* Ajustado para alinear ícono y barra */
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .project-details li:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-details .detail-icon {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            color: #EC6608;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .detail-text strong {
+            color: #3D2C2C;
+        }
+
+        /* --- NUEVOS ESTILOS PARA LA BARRA DE PROGRESO --- */
+        .detail-text-progress {
+            flex-grow: 1;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+        
+        .progress-info strong {
+            color: #3D2C2C;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            background-color: #EADFD3;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar-fg {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #EC6608);
+            border-radius: 10px;
+            transition: width 0.8s ease-in-out;
+            width: 0%; /* Inicia en 0, JS la ajusta */
+        }
+        /* --- FIN DE NUEVOS ESTILOS --- */
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-header">
+        <button class="back-button" onclick="goBack()">
+            ← Volver al Tablero Principal
+        </button>
+        <div class="nav-title">Plan de Acción 2025</div>
+        <div style="width: 180px;"></div>
+    </nav>
+
+    <div class="main-container">
+        <div class="hero-section">
+            <h1 class="hero-title">PLAN DE ACCIÓN 2025</h1>
+            <p class="hero-subtitle">Seguimiento de Actividades y Metas Estratégicas - VPRE</p>
+        </div>
+
+        <div class="focus-group">
+            <h2 class="focus-group-title">
+                <span class="focus-number">EJE TRANSVERSAL B</span>
+                Identificar e implementar herramientas que permitan la financiación de los proyectos de concesión a cargo de la ANI.
+            </h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-coins"></i></div>
+                    <h3 class="project-title">Identificar e implementar herramientas que permitan la financiación de los proyectos de concesión a cargo de la ANI.</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT Valorización</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">50%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Implementación de proceso de valorización e instrumentos financieros según plan de trabajo socializado en abril 2025. Principales logros: 1. Elaboración del procedimiento de Originación de la Contribución Nacional de Valorización validado con GIT de Planeación. 2. Diseño de formatos e instructivos: Matriz Multicriterio, Metodología de priorización del Sector Transporte, Matriz de Calificación de Proyectos, Instructivo de metodología de calificación, Documento Ejecutivo de presentación y Documento Técnico de Soporte. 3. Avance en caracterización e implementación de procedimientos del proceso por parte del GIT de valorización.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="focus-group">
+            <h2 class="focus-group-title">
+                <span class="focus-number">Foco Estratégico 2</span>
+                Gestionar el desarrollo de los proyectos de infraestructura a través del esquema de APP.
+            </h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <h3 class="project-title">Desarrollar las actividades necesarias para la implementación de la estrategia global de sostenibilidad de la ANI</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT Ambiental</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">40%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> La adopción de la estrategia de sostenibilidad mediante resolución, se prevé realizar en el segundo semestre;entre tanto se ha venido implementando un pilotaje a través de encuestas a las áreas, lo que permitirá su análisis y ajuste para adopción final. Pendiente sustentación ante el comité directivo de la Entidad.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="focus-group">
+            <h2 class="focus-group-title">
+                <span class="focus-number">Foco Estratégico 3</span>
+                Fortalecer la institucionalidad de la Agencia con el fin de generar confianza y transparencia en la gestión.
+            </h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-users-gear"></i></div>
+                    <h3 class="project-title">Promover el acceso igualitario a las oportunidades laborales en los proyectos de 5G de Concesiones en labores de tipo operativo.</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT Planeación - GIT Social</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">24%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> A la fecha el 24% de los cargos operativos que se desarrollan en los proyectos 5G se están adelantando por mujeres</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-user-tie"></i></div>
+                    <h3 class="project-title">Promover el acceso igualitario a las oportunidades laborales en los proyectos de 5G de Concesiones en labores de tipo gerencial.</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT Planeación - GIT Social</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">38%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> A la fecha el 38% de los cargos gerenciales en los proyectos 5G son ocupados por mujeres.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h3 class="project-title">Elaborar documento de diagnóstico de datos alineado con gobierno digital para la ANI</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT TICS</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">0%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Se espera desarrollar en el segundo semestre, una vez se cuente con el personal requerido.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-cloud-upload-alt"></i></div>
+                    <h3 class="project-title">Implementación del servicio de nube pública para la Gestión del Cobro Nacional de Valorización</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> VPRE</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">90%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Se diseñó Plan de Ejecución. Se inició migración de infraestructura de Datatools a la nube OCI.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-toolbox"></i></div>
+                    <h3 class="project-title">Implementar herramientas tecnológicas de apoyo a la gestión en nómina e inventarios</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT TICS</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">0%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Se lanzó evento RFI en Tienda Virtual del Estado Colombiano para conocer posibles proveedores y tener retroalimentación sobre estudios previos y modelos de operación de las soluciones requeridas. Se realizaron mesas de trabajo conjuntas con participación del GIT de Tecnología, Talento Humano e Inventarios para dar respuesta a proveedores frente al evento de cotización lanzado.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-sitemap"></i></div>
+                    <h3 class="project-title">Desarrollar las actividades necesarias para la ejecución y seguimiento del plan de implementación del Modelo Integrado de Planeación y Gestión - MIPG</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT Planeación</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">50%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Durante el primer semestre se adelantó el diligenciamiento del FURAG para la evaluación de la vigencia 2025 y se recibió la calificación de la vigencia 2024, en donde la entidad alcanzó un resultado de 86.9. A la fecha se encuentran adelantando mesas de trabajo con las áreas con el fin de formular el plan de implementación.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-file-signature"></i></div>
+                    <h3 class="project-title">Implementar el trámite "Concepto de viabilidad técnica para ubicación de estaciones de servicio en vías nacionales concesionadas" en línea ante el SUIT</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT Planeación</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">0%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Debido a retrasos en la contratación del personal no se iniciado el desarrollo del aplicativo. Dada contingencia se espera desarrollar una primera fase este año, consistente en identificación de necesidades y preparación de mockup, en la vigencia 2026 se desarrollará e implementará el aplicativo.</span></li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="project-title">Elaborar documento de estrategia de atención de situaciones de conflictividad de la Agencia</h3>
+                    <ul class="project-details">
+                        <li><i class="fa-solid fa-user-gear detail-icon"></i><span class="detail-text"><strong>Responsable:</strong> GIT Social</span></li>
+                        <li>
+                            <i class="fa-solid fa-chart-line detail-icon"></i>
+                            <div class="detail-text-progress">
+                                <div class="progress-info">
+                                    <strong>Avance:</strong>
+                                    <span class="percentage-value">0%</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fg"></div></div>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-circle-info detail-icon"></i><span class="detail-text"><strong>Avance:</strong> Documento de estrategia de atención a situaciones de conflictividad se encuentra en revisión y ajustes por parte de la VPRE. Al formular planeación de la Agencia para período 2022-2026, se identificó que uno de los aspectos que más afecta el desarrollo de proyectos de concesión del modo carretero es la conflictividad a nivel territorial. Por tanto, la ANI estableció como meta la formulación de Estrategia de atención a situaciones de conflictividad en proyectos, trabajada y conciliada con el Ministerio de Transporte.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        // Se ejecuta cuando el contenido de la página se ha cargado por completo
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- SCRIPT PARA ACTUALIZAR LAS BARRAS DE PROGRESO ---
+            document.querySelectorAll('.project-card').forEach(card => {
+                // Busca el contenedor de la barra de progreso dentro de cada tarjeta
+                const progressWrapper = card.querySelector('.detail-text-progress');
+                if (progressWrapper) {
+                    const percentageSpan = progressWrapper.querySelector('.percentage-value');
+                    const progressBarFill = progressWrapper.querySelector('.progress-bar-fg');
+                    
+                    if (percentageSpan && progressBarFill) {
+                        // Obtiene el valor numérico del porcentaje
+                        const percentage = percentageSpan.textContent.replace('%', '').trim();
+                        // Aplica el porcentaje como el ancho de la barra
+                        progressBarFill.style.width = percentage + '%';
+                    }
+                }
+            });
+
+            // Script original para la interactividad de las tarjetas
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('.project-title').textContent;
+                    // Selector corregido para ser más robusto
+                    const statusLi = this.querySelector('li:last-child');
+                    const status = statusLi ? statusLi.querySelector('.detail-text').textContent : 'Estado no disponible';
+                    alert(`Proyecto: ${title}\n\n${status}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
