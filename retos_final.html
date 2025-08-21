@@ -594,6 +594,96 @@
             .bar-label { text-align: left; font-size: 0.8rem; }
         }
     </style>
+    <style>
+      @media print {
+
+        /* --- CONFIGURACIÓN GENERAL DE LA PÁGINA --- */
+        @page {
+          size: A4 landscape; /* Hoja en formato horizontal */
+          margin: 0; /* Sin márgenes */
+        }
+
+        /* --- AJUSTES DEL CUERPO DEL DOCUMENTO --- */
+        body {
+          background: #FFFFFF !important; /* Fondo totalmente blanco */
+          color: #000000 !important; /* Texto principal en negro */
+          min-height: 0 !important;
+          height: 100vh; /* Forzar altura a una página */
+          overflow: hidden; /* Evitar desbordamientos */
+        }
+        
+        /* --- OCULTAR ELEMENTOS INNECESARIOS --- */
+        body::before, body::after, .background-particles, .floating-help, .footer {
+          display: none !important; /* Oculta fondos, partículas, botón de ayuda y footer */
+        }
+
+        /* --- AJUSTAR CONTENIDO PRINCIPAL --- */
+        .main-container {
+          padding-top: 20px !important; /* Menos espacio arriba */
+          padding-bottom: 20px !important; /* Menos espacio abajo */
+          max-width: 100% !important;
+        }
+
+        /* --- AJUSTAR TÍTULOS Y TEXTOS --- */
+        .main-title, .main-subtitle, .main-description, .footer-info h3, .footer-info p {
+          color: #000000 !important; /* Asegurar que todo el texto sea negro */
+          text-shadow: none !important; /* Quitar sombras */
+        }
+        .main-title {
+          -webkit-text-fill-color: initial !important; /* Anular el color de gradiente */
+          background: none !important;
+          font-size: 3rem !important; /* Un poco más pequeño para que quepa bien */
+        }
+        
+        /* --- AJUSTAR LOGO --- */
+        .ani-logo {
+          width: 100px !important;
+          height: 100px !important;
+          box-shadow: none !important;
+        }
+        .logo-image {
+          width: 100px !important;
+          height: 100px !important;
+        }
+        
+        /* --- REORGANIZAR LAS TARJETAS PARA QUE QUEPAN --- */
+        .cards-grid {
+          display: grid;
+          /* Forzar una cuadrícula de 4 columnas y 2 filas */
+          grid-template-columns: repeat(4, 1fr) !important;
+          grid-template-rows: repeat(2, auto) !important;
+          gap: 15px !important; /* Reducir espacio entre tarjetas */
+          padding: 10px !important;
+        }
+
+        .module-card {
+          transform: none !important; /* Quitar efectos de hover */
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important; /* Sombra sutil para impresión */
+          padding: 15px !important; /* Menos espacio interno */
+          border: 1px solid #ccc !important; /* Borde simple */
+          page-break-inside: avoid; /* Evitar que una tarjeta se parta en dos páginas */
+        }
+        
+        /* --- AJUSTAR TEXTO DENTRO DE LAS TARJETAS --- */
+        .card-title {
+            font-size: 1.1rem !important;
+        }
+        .card-description {
+            font-size: 0.85rem !important;
+            line-height: 1.4 !important;
+            margin-bottom: 10px !important;
+        }
+        .stat-number {
+            font-size: 1.3rem !important;
+        }
+
+        /* Quitar animaciones */
+        * {
+           animation: none !important;
+           transition: none !important;
+        }
+      }
+    </style>
 </head>
 <body>
     <nav class="nav-header">
@@ -673,19 +763,19 @@ const challengesData = [
     {id: 17, git: 'Riesgos', title: 'Formalizar jurídicamente la metodología de tarifas diferenciales en peajes.', impact: 'medio', status: 'en-progreso', progress: 45, proposal: '<p>Motivar la expedición de la metodología de tarifas diferenciales para los proyectos carreteros de la ANI por parte del Ministerio de Transporte.</p>', impact_detail: 'Sirve como herramienta de diálogo en mesas de trabajo con las comunidades para mitigar conflictos sociales.'},
 
     // --- GIT PLANEACIÓN (4) ---
-    {id: 18, git: 'Planeación', title: 'Coordinación y acompañamiento en el trámite presupuestal de vigencias futuras de la Estrategia Férrea.', impact: 'alto', status: 'en-progreso', progress: 70, proposal: '<ul><li>Coordinación con las vicepresidencias de estructuración y la VGCON.', impact_detail: 'Garantizar el cumplimiento de los tramites presupuestales a través de vigencias futuras que permitan la ejecución de los proyectos de la estrategia férrea.'},
-    {id: 19, git: 'Planeación', title: 'Gestión de recursos adicionales de inversión (carta de modificación ) para cubrir la necesidades desfinanciadas según PL –PGN 2026.', impact: 'alto', status: 'en-progreso', progress: 60, proposal: '<ul><li>Identificación de los recursos desfinanciados que se relacionaron en el Anteproyecto de presupuesto 2026.</li></ul>', impact_detail: 'Pago del déficit de las vigencias futuras APP por $1.5 billones, obras complementarias desfinanciadas y que están relacionadas con fallos judiciales.'},
-    {id: 20, git: 'Planeación', title: 'Programación del presupuesto de inversión 2026 por concepto y por vicepresidencias.', impact: 'alto', status: 'en-progreso', progress: 50, proposal: '<p>Propuesta de distribución de recursos de inversión para cada una de las vicepresidencias, para aprobación por parte del presidente de la ANI.</p>', impact_detail: 'Contar con los recursos de inversión para el cumplimiento de las metas institucionales en cada una de las áreas .'},
-    {id: 21, git: 'Planeación', title: 'Jornada de Planeación Estratégica 2026 con la alta dirección.', impact: 'alto', status: 'en-progreso', progress: 35, proposal: '<ul><li>Reunión para la definición de la metodología de planeación, posteriormente reunión con Presidencia para definir la fecha de realización de la jornada.</li></ul>', impact_detail: 'Garantizar el cumplimiento de las metas establecidas en el PND y alinear las áreas de la Agencia con el fin de alcanzar un cierre de gobierno adecuado.'},
-    {id: 22, git: 'Planeación', title: 'Gestión del Conocimiento: Documentar las experiencias exitosas con las que se exponga el sello técnico de la ANI donde se evidencie que somos una entidad única y especializada en temas de infraestructura.', impact: 'alto', status: 'en-progreso', progress: 35, proposal: '<ul><li>Conformar un equipo compuesto por enlaces de las diferentes áreas quienes se encargarán de la recopilación de la información y desarrollo de la propuesta según el área.</li></ul>', impact_detail: 'Publicación de las experiencias exitosas como memoria institucional con número ISBN.'},
+    {id: 18, git: 'Planeación', title: 'Optimización y automatización de actividades de la OETR.', impact: 'alto', status: 'en-progreso', progress: 50, proposal: '<ul><li>Definir y establecer los requerimientos funcionales de las mejoras y desarrollo de ANISCOPIO en conjunto con GIT TIC.', impact_detail: 'Reducir los tiempos en la fase de acopio y procesamiento de la OETR, que permita potenciar la fase de análisis y mejora en la oportunidad de difusión de la información estadística.'},
+    {id: 19, git: 'Planeación', title: 'Posicionar la información estadística producida por la OETR.', impact: 'alto', status: 'en-progreso', progress: 50, proposal: '<ul><li>Mejora continua de los productos y aumento de los canales de difusión incluyendo redes sociales, con el soporte y apoyo de la oficina de comunicaciones.</li></ul>', impact_detail: 'Aumentar el aprovechamiento de la información de la OETR por parte de los grupos de interés internos y externos..'},
+    {id: 20, git: 'Planeación', title: 'Implementar  nuevo mapa de procesos - Rediseño institucional.', impact: 'medio', status: 'en-progreso', progress: 50, proposal: '<p>Plantear y presentar plan de trabajo donde se aborde la actualización del mapa de procesos de la ANI con la documentación anexa a cada proceso.</p>', impact_detail: ''},
+    {id: 21, git: 'Planeación', title: 'Gestionar al menos 3 alianzas que permitan desarrollar  los proyectos de infraestructura y transversales de la ANI a priorizar para la vigencia 2026 a través de cooperación internacional.', impact: 'medio', status: 'en-progreso', progress: 50, proposal: '<ul><li>Continuar con el seguimiento a los aliados que manifestaron interés en apoyar los proyectos de la ANI para establecer un plan de acción y continuar gestionando los espacios para la presentación de los proyectos de la entidad a actores internacionales./li></ul>', impact_detail: 'Según el monto de la cooperación financiera o las capacidades técnicas fortalecidas se podrán ejecutar proyectos tanto de infraestructura como transversales de la entidad priorizados .'},
+    
 
     // --- GIT TIC (3) ---
-    {id: 23, git: 'TIC', title: 'Financiar con Vigencias futuras los proyectos que trascienden el año fiscal actual.', impact: 'medio', status: 'en-progreso', progress: 50, proposal: '<p>Planificar y presentar con anticipación los requerimientos de vigencias futuras para el GIT.</p>', impact_detail: 'Evitar la Interrupción de proyectos clave y la afectación de la continuidad operativa.'},
-    {id: 24, git: 'TIC', title: 'Implementar un plan sectorial para la gestión unificada y estandarizada de los datos maestros.', impact: 'alto', status: 'en-riesgo', progress: 15, proposal: '<p>Definir un marco de gobernanza de datos maestros, identificar datos críticos, y establecer estándares de calidad.</p>', impact_detail: 'Inconsistencia en la información, duplicidad de datos, y limitaciones en la interoperabilidad con otras entidades.'},
-    {id: 25, git: 'TIC', title: 'Potenciar el equipo del GIT TIC.', impact: 'alto', status: 'en-riesgo', progress: 20, proposal: '<p>Apoyar los requerimientos de vigencias futuras para asegurar la contratación del personal necesario.</p>', impact_detail: 'Retrasos en proyectos críticos, sobrecarga laboral, disminución de la calidad de los servicios de TI.'},
+    {id: 22, git: 'TIC', title: 'Financiar con Vigencias futuras los proyectos que trascienden el año fiscal actual.', impact: 'medio', status: 'en-progreso', progress: 50, proposal: '<p>Planificar y presentar con anticipación los requerimientos de vigencias futuras para el GIT.</p>', impact_detail: 'Evitar la Interrupción de proyectos clave y la afectación de la continuidad operativa.'},
+    {id: 23, git: 'TIC', title: 'Implementar un plan sectorial para la gestión unificada y estandarizada de los datos maestros.', impact: 'alto', status: 'en-riesgo', progress: 15, proposal: '<p>Definir un marco de gobernanza de datos maestros, identificar datos críticos, y establecer estándares de calidad.</p>', impact_detail: 'Inconsistencia en la información, duplicidad de datos, y limitaciones en la interoperabilidad con otras entidades.'},
+    {id: 24, git: 'TIC', title: 'Potenciar el equipo del GIT TIC.', impact: 'alto', status: 'en-riesgo', progress: 20, proposal: '<p>Apoyar los requerimientos de vigencias futuras para asegurar la contratación del personal necesario.</p>', impact_detail: 'Retrasos en proyectos críticos, sobrecarga laboral, disminución de la calidad de los servicios de TI.'},
 
     // --- GIT VALORIZACIÓN (1) ---
-    {id: 26, git: 'Valorización', title: 'Analizar y verificar los recursos propios y del FIP para el presupuesto de la vigencia 2026.', impact: 'alto', status: 'en-progreso', progress: 80, proposal: '<p>Para asegurar la continuidad operativa y el correcto despliegue de la Contribución Nacional de Valorización, es prioritario gestionar y asignar los recursos requeridos a nivel humano, tecnológico, físico e institucional.</p>', impact_detail: 'Asegurar el sostenimiento y continuidad del proceso de la Contribución Nacional de Valorización (CNV).'}
+    {id: 25, git: 'Valorización', title: 'Analizar y verificar los recursos propios y del FIP para el presupuesto de la vigencia 2026.', impact: 'alto', status: 'en-progreso', progress: 80, proposal: '<p>Para asegurar la continuidad operativa y el correcto despliegue de la Contribución Nacional de Valorización, es prioritario gestionar y asignar los recursos requeridos a nivel humano, tecnológico, físico e institucional.</p>', impact_detail: 'Asegurar el sostenimiento y continuidad del proceso de la Contribución Nacional de Valorización (CNV).'}
 ];
 
 

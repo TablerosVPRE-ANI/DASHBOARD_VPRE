@@ -238,6 +238,96 @@
     box-shadow: 0 5px 15px rgba(236, 102, 8, 0.4);
 }
     </style>
+    <style>
+      @media print {
+
+        /* --- CONFIGURACIÓN GENERAL DE LA PÁGINA --- */
+        @page {
+          size: A4 landscape; /* Hoja en formato horizontal */
+          margin: 0; /* Sin márgenes */
+        }
+
+        /* --- AJUSTES DEL CUERPO DEL DOCUMENTO --- */
+        body {
+          background: #FFFFFF !important; /* Fondo totalmente blanco */
+          color: #000000 !important; /* Texto principal en negro */
+          min-height: 0 !important;
+          height: 100vh; /* Forzar altura a una página */
+          overflow: hidden; /* Evitar desbordamientos */
+        }
+        
+        /* --- OCULTAR ELEMENTOS INNECESARIOS --- */
+        body::before, body::after, .background-particles, .floating-help, .footer {
+          display: none !important; /* Oculta fondos, partículas, botón de ayuda y footer */
+        }
+
+        /* --- AJUSTAR CONTENIDO PRINCIPAL --- */
+        .main-container {
+          padding-top: 20px !important; /* Menos espacio arriba */
+          padding-bottom: 20px !important; /* Menos espacio abajo */
+          max-width: 100% !important;
+        }
+
+        /* --- AJUSTAR TÍTULOS Y TEXTOS --- */
+        .main-title, .main-subtitle, .main-description, .footer-info h3, .footer-info p {
+          color: #000000 !important; /* Asegurar que todo el texto sea negro */
+          text-shadow: none !important; /* Quitar sombras */
+        }
+        .main-title {
+          -webkit-text-fill-color: initial !important; /* Anular el color de gradiente */
+          background: none !important;
+          font-size: 3rem !important; /* Un poco más pequeño para que quepa bien */
+        }
+        
+        /* --- AJUSTAR LOGO --- */
+        .ani-logo {
+          width: 100px !important;
+          height: 100px !important;
+          box-shadow: none !important;
+        }
+        .logo-image {
+          width: 100px !important;
+          height: 100px !important;
+        }
+        
+        /* --- REORGANIZAR LAS TARJETAS PARA QUE QUEPAN --- */
+        .cards-grid {
+          display: grid;
+          /* Forzar una cuadrícula de 4 columnas y 2 filas */
+          grid-template-columns: repeat(4, 1fr) !important;
+          grid-template-rows: repeat(2, auto) !important;
+          gap: 15px !important; /* Reducir espacio entre tarjetas */
+          padding: 10px !important;
+        }
+
+        .module-card {
+          transform: none !important; /* Quitar efectos de hover */
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important; /* Sombra sutil para impresión */
+          padding: 15px !important; /* Menos espacio interno */
+          border: 1px solid #ccc !important; /* Borde simple */
+          page-break-inside: avoid; /* Evitar que una tarjeta se parta en dos páginas */
+        }
+        
+        /* --- AJUSTAR TEXTO DENTRO DE LAS TARJETAS --- */
+        .card-title {
+            font-size: 1.1rem !important;
+        }
+        .card-description {
+            font-size: 0.85rem !important;
+            line-height: 1.4 !important;
+            margin-bottom: 10px !important;
+        }
+        .stat-number {
+            font-size: 1.3rem !important;
+        }
+
+        /* Quitar animaciones */
+        * {
+           animation: none !important;
+           transition: none !important;
+        }
+      }
+    </style>
 </head>
 <script>
 function goBack() {
@@ -404,48 +494,47 @@ function goBack() {
             </div>
         </div>
 
-        <div class="pillar-section">
+<div class="pillar-section">
             <h2 class="pillar-title"><i class="fa-solid fa-list-check"></i>GIT PLANEACIÓN</h2>
             <div class="projects-grid">
                  <div class="project-card">
-                    <div class="card-icon"><i class="fa-solid fa-landmark"></i></div>
-                    <h3 class="project-title">Coordinar con MinHacienda obtención de recursos para cubrir VF de las APP y pago de déficits.</h3>
+                    <div class="card-icon"><i class="fa-solid fa-handshake"></i></div>
+                    <h3 class="project-title">Coordinación y acompañamiento en el trámite presupuestal de vigencias futuras de la Estrategia Férrea</h3>
                     <ul class="project-details">
-                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se están documentando y archivando todas las constancias que respaldan la solicitud de recursos (anteproyectos, cartas, actas, etc.).</span></li>
-                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Agotar todas las alternativas disponibles para garantizar el cumplimiento de las obligaciones contractuales.</span></li>
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Sin información</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Implementar los procedimientos para la gestión ante el DNP, MT y MHCP de las solicitudes de vigencias futuras para la estrategia férrea</span></li>
                     </ul>
                 </div>
                 <div class="project-card">
-                    <div class="card-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                    <h3 class="project-title">Disminuir la posibilidad de constitución de reservas y pasivos exigibles.</h3>
+                    <div class="card-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <h3 class="project-title">Gestión de recursos adicionales de inversión (carta de modificación) para cubrir la necesidades desfinanciadas según PL-PGN 2026</h3>
                     <ul class="project-details">
-                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se realizan alertas presupuestales continuas para proyectos con ejecución < 30% y mesas de trabajo interáreas.</span></li>
-                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Fortalecer la ejecución financiera de los proyectos para el presupuesto 2025.</span></li>
-                        <li><i class="detail-icon fa-solid fa-link"></i><span class="detail-text"><a href="https://app.powerbi.com/view?r=eyJrIjoiYjIwZTVlZjYtNDVlNi00MjczLTk3MDMtMDRmNDU0NjJlNDQzIiwidCI6IjcwYzI2NjI2LWZmZjAtNGY1Yi1iNDI4LTNkY2I5NzViMmJiMCJ9" target="_blank">Ver Dashboard de Seguimiento</a></span></li>
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Sin información</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Solicitud de los recursos requeridos para atender las necesidades desfinanciadas de inversión en la vigencia 2026 a través de cartas de modificación del PL-PGN</span></li>
                     </ul>
                 </div>
                 <div class="project-card">
-                    <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
-                    <h3 class="project-title">Ejecutar plan de trabajo de la Política de Gestión del Conocimiento.</h3>
+                    <div class="card-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3 class="project-title">Programación del presupuesto de inversión 2026 por concepto y por vicepresidencias</h3>
                     <ul class="project-details">
-                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> El plan está en desarrollo; se definirá a corto plazo el conjunto de documentos clave (memorias, guías) para su sistematización y socialización interna.</span></li>
-                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Capturar y difundir las lecciones aprendidas y mejores prácticas en la gestión de la entidad.</span></li>
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Sin información</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Propuesta de distribución de recursos de inversión para cada una de las vicepresidencias, para aprobación por parte del presidente de la ANI</span></li>
                     </ul>
                 </div>
                 <div class="project-card">
-                    <div class="card-icon"><i class="fa-solid fa-arrows-to-circle"></i></div>
-                    <h3 class="project-title">Fortalecer la capacidad institucional mediante un proceso de seguimiento al Plan de Mejoramiento.</h3>
+                    <div class="card-icon"><i class="fa-solid fa-users-gear"></i></div>
+                    <h3 class="project-title">Jornada de Planeación Estratégica 2026 con la alta dirección</h3>
                     <ul class="project-details">
-                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Desde junio de 2025, el GIT de Planeación asumió la coordinación del seguimiento, estableciendo mecanismos de monitoreo y reporte periódico de avance.</span></li>
-                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Implementar un proceso estructurado de seguimiento y ajuste al Plan de Mejoramiento Institucional.</span></li>
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Sin información</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Definir las prioridades y metas a desarrollar en el último año de gobierno. Sentar las bases para la planeación estratégica del cuatrienio 2026-2030</span></li>
                     </ul>
                 </div>
                  <div class="project-card">
-                    <div class="card-icon"><i class="fa-solid fa-certificate"></i></div>
-                    <h3 class="project-title">Lograr la certificación de los sistemas de Gestión de Calidad (SGC) y de Gestión Ambiental (SGAS).</h3>
+                    <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3 class="project-title">Gestión del Conocimiento: Documentar las experiencias exitosas con las que se exponga el sello técnico de la ANI</h3>
                     <ul class="project-details">
-                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Se están elaborando los estudios previos necesarios; se proyecta iniciar el proceso formal de auditoría en el cuarto trimestre de 2025.</span></li>
-                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Institucionalizar estándares de excelencia operativa y de sostenibilidad.</span></li>
+                        <li><i class="detail-icon fa-solid fa-spinner"></i><span class="detail-text"><strong>Estado Actual:</strong> Sin información</span></li>
+                        <li><i class="detail-icon fa-solid fa-flag-checkered"></i><span class="detail-text"><strong>Proyección a 31/12/25:</strong> Preservar la memoria institucional, documentando las experiencias técnicas exitosas de la Agencia para el conocimiento del público en general. Así mismo los logros, gestiones y buenas experiencias de los diferentes equipos de la ANI.</span></li>
                     </ul>
                 </div>
             </div>
